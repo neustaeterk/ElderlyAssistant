@@ -74,7 +74,7 @@ public class PhotoManager {
         File storageDir = new File(photosDir + "/ElderlyAssistant/Medication_Photos");
 
         // keep the storage directory to be able to be retrieved later
-        imageFileDirectory = storageDir.getPath();
+        //imageFileDirectory = storageDir.getPath();
 
         //make the desired directy if it doesn't exist
         if (!storageDir.exists())
@@ -91,6 +91,7 @@ public class PhotoManager {
 
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        imageFileDirectory = image.getAbsolutePath();
         return image;
     }
 

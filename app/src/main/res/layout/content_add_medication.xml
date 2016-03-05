@@ -36,9 +36,17 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:text="TAKE OF PHOTO OF MEDICATION"
+        android:id="@+id/takePhotoButton"
+        android:layout_below="@+id/timePicker"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:text="ADD TO SCHEDULE"
         android:id="@+id/addMedicationButton"
-        android:layout_below="@+id/timePicker"
+        android:layout_below="@+id/takePhotoButton"
         android:layout_alignParentStart="true" />
 
 </RelativeLayout>
