@@ -16,6 +16,8 @@ import java.sql.Time;
 
 public class AddMedicationActivity extends AppCompatActivity {
 
+    String photoName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +27,17 @@ public class AddMedicationActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final DatabaseHelper db = new DatabaseHelper(this);
+        final PhotoManager photoManager = new PhotoManager(this);
+
+        Button takePhotoButton = (Button) findViewById(R.id.takePhotoButton) ;
+        takePhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View V) {
+                Log.d("Starting Camera: ", "Initializing camera...");
+                photoManager.takePicture();
+                photoName = photoManager.getPhotoName();
+            }
+        });
 
         Button addMedicationButton = (Button) findViewById(R.id.addMedicationButton) ;
         addMedicationButton.setOnClickListener(new View.OnClickListener() {
