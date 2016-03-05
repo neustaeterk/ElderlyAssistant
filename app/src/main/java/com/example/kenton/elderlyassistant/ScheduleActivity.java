@@ -55,7 +55,9 @@ public class ScheduleActivity extends AppCompatActivity {
                 for (MedicationReminders medReminder : reminders) {
                     String log = "Id: " + medReminder.getId() + " ,Time: " +
                                  medReminder.getTime() + " ,Day: " + medReminder.getDaysOfWeek() +
-                                 " ,Name: " + medReminder.getMedicationName();
+                                 " ,Name: " + medReminder.getMedicationName() +
+                                 " ,Photo Name: " + medReminder.getPhotoName() +
+                                 " ,Photo Directory: " + medReminder.getPhotoDirectory();
                     // Writing Contacts to log
                     Log.d("Name: ", log);
                 }

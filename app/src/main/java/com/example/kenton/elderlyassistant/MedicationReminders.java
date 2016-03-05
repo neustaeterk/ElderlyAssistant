@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class MedicationReminders {
 
-    int id;
+    long id;
     String time;
     String medicationName;
     String daysOfWeek;
@@ -22,7 +22,7 @@ public class MedicationReminders {
 
     }
 
-    public MedicationReminders(int id, String time, String daysOfWeek, String medicationName,
+    public MedicationReminders(long id, String time, String daysOfWeek, String medicationName,
                                String photoName, String photoDirectory)
     {
         this.id = id;
@@ -33,7 +33,7 @@ public class MedicationReminders {
         this.photoDirectory = photoDirectory;
     }
 
-    public MedicationReminders(int id, String time, String daysOfWeek, String medicationName)
+    public MedicationReminders(long id, String time, String daysOfWeek, String medicationName)
     {
         this.id = id;
         this.time = time;
@@ -54,7 +54,7 @@ public class MedicationReminders {
         this.photoDirectory = photoDirectory;
     }
 
-    public void setId(int id)
+    public void setId(long id)
     {
         this.id = id;
     }
@@ -84,7 +84,7 @@ public class MedicationReminders {
         this.photoDirectory = photoDirectory;
     }
 
-    public int getId()
+    public long getId()
     {
         return this.id;
     }

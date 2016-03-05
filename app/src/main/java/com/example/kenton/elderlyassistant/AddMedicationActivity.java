@@ -17,6 +17,9 @@ import java.sql.Time;
 public class AddMedicationActivity extends AppCompatActivity {
 
     String photoName;
+    String photoDir;
+    long ID;
+    boolean photoTaken = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,7 @@ public class AddMedicationActivity extends AppCompatActivity {
 
         final DatabaseHelper db = new DatabaseHelper(this);
         final PhotoManager photoManager = new PhotoManager(this);
+        final MedicationReminders medicationReminders = new MedicationReminders();
 
         Button takePhotoButton = (Button) findViewById(R.id.takePhotoButton) ;
         takePhotoButton.setOnClickListener(new View.OnClickListener() {
@@ -36,6 +40,17 @@ public class AddMedicationActivity extends AppCompatActivity {
                 Log.d("Starting Camera: ", "Initializing camera...");
                 photoManager.takePicture();
                 photoName = photoManager.getPhotoName();
+                photoDir = photoManager.getPhotoDirectory();
+                //start a new entry to the database with the photo name and directory
+                medicationReminders.setPhotoName(photoName);
+                medicationReminders.setPhotoDirectory(photoDir);
+
+                ID = db.addReminder(medicationReminders);
+
+                //change the id of the medicationReminder so that it can be updated
+                medicationReminders.setId(ID);
+                //update boolean so that the add button updates the entry already added
+                photoTaken = true;
             }
         });
 
@@ -56,7 +71,20 @@ public class AddMedicationActivity extends AppCompatActivity {
                 //just for testing
                 String daysOfWeek = "M";
 
-                db.addReminder(new MedicationReminders(time, daysOfWeek, medName));
+                medicationReminders.setTime(time);
+                medicationReminders.setDaysOfWeek(daysOfWeek);
+                medicationReminders.setMedicationName(medName);
+
+                //if the photo was taken we update, otherwise add to database
+                if (photoTaken)
+                {
+                    db.updateReminder(medicationReminders);
+                }
+                else
+                {
+                    db.addReminder(medicationReminders);
+                }
+
                 finish();
             }
         });

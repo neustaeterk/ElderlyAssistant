@@ -23,6 +23,7 @@ public class PhotoManager {
     String mCurrentPhotoPath;
     Activity activity;
     String imageFileName;
+    String imageFileDirectory;
 
     PhotoManager (Activity activity)
     {
@@ -32,6 +33,11 @@ public class PhotoManager {
     public String getPhotoName()
     {
         return imageFileName;
+    }
+
+    public String getPhotoDirectory()
+    {
+        return imageFileDirectory;
     }
 
     public void takePicture()
@@ -66,6 +72,9 @@ public class PhotoManager {
         File photosDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
         File storageDir = new File(photosDir + "/ElderlyAssistant/Medication_Photos");
+
+        // keep the storage directory to be able to be retrieved later
+        imageFileDirectory = storageDir.getPath();
 
         //make the desired directy if it doesn't exist
         if (!storageDir.exists())
