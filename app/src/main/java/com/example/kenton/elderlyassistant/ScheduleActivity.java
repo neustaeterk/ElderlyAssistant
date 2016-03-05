@@ -53,7 +53,9 @@ public class ScheduleActivity extends AppCompatActivity {
                 Log.d("Reading: ", "Reading all reminders..");
                 List<MedicationReminders> reminders = db.getAllReminders();
                 for (MedicationReminders medReminder : reminders) {
-                    String log = "Id: " + medReminder.getId() + " ,Time: " + medReminder.getTime() + " ,Name: " + medReminder.getMedicationName();
+                    String log = "Id: " + medReminder.getId() + " ,Time: " +
+                                 medReminder.getTime() + " ,Day: " + medReminder.getDaysOfWeek() +
+                                 " ,Name: " + medReminder.getMedicationName();
                     // Writing Contacts to log
                     Log.d("Name: ", log);
                 }

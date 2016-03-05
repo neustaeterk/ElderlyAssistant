@@ -31,13 +31,19 @@ public class AddMedicationActivity extends AppCompatActivity {
             @Override
             public void onClick(View V) {
                 Log.d("Insert: ", "Inserting...");
+
                 EditText editText = (EditText) findViewById(R.id.medicationName);
                 String medName = editText.getText().toString();
+
                 TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
                 String hour = "" + timePicker.getCurrentHour(); // getHour() for API 23
                 String minute = "" + timePicker.getCurrentMinute(); //getMinute() for API 23
                 String time = hour + ":" + minute;
-                db.addReminder(new MedicationReminders(time, medName));
+
+                //just for testing
+                String daysOfWeek = "M";
+
+                db.addReminder(new MedicationReminders(time, daysOfWeek, medName));
                 finish();
             }
         });

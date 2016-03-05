@@ -15,7 +15,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // database and table names
     private static final String DATABASE_NAME = "reminders.db";
@@ -25,6 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private  static final String KEY_ID = "id";
     private static final String KEY_MED_NAME = "medication_name";
     private static final String KEY_TIME = "time";
+    private static final String KEY_DAYS = "daysOfWeek";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -36,6 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_NAME + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
                 + KEY_TIME + " TEXT,"
+                + KEY_DAYS + " TEXT,"
                 + KEY_MED_NAME + " TEXT" + ")";
         sqLiteDatabase.execSQL(CREATE_CONTACTS_TABLE);
     }
@@ -56,6 +58,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_TIME, medReminder.getTime());
+        values.put(KEY_DAYS, medReminder.getDaysOfWeek());
         values.put(KEY_MED_NAME, medReminder.getMedicationName());
 
         // Inserting Row
@@ -67,13 +70,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_NAME, new String[] { KEY_ID,
-                        KEY_MED_NAME, KEY_TIME }, KEY_ID + "=?",
+                        KEY_MED_NAME, KEY_TIME, KEY_DAYS }, KEY_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
         MedicationReminders medReminder = new MedicationReminders(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2));
+                cursor.getString(1), cursor.getString(2), cursor.getString(3));
 
         return medReminder;
     }
@@ -92,7 +95,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 MedicationReminders medReminder = new MedicationReminders();
                 medReminder.setId(Integer.parseInt(cursor.getString(0)));
                 medReminder.setTime(cursor.getString(1));
-                medReminder.setMedicationName(cursor.getString(2));
+                medReminder.setDaysOfWeek(cursor.getString(2));
+                medReminder.setMedicationName(cursor.getString(3));
                 // Adding contact to list
                 reminderList.add(medReminder);
             } while (cursor.moveToNext());
@@ -117,6 +121,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_TIME, medReminder.getTime());
+        values.put(KEY_DAYS, medReminder.getDaysOfWeek());
         values.put(KEY_MED_NAME, medReminder.getMedicationName());
 
         // updating row

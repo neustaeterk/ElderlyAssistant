@@ -13,22 +13,25 @@ public class MedicationReminders {
     int id;
     String time;
     String medicationName;
+    String daysOfWeek;
 
     public  MedicationReminders()
     {
 
     }
 
-    public MedicationReminders(int id, String time, String medicationName)
+    public MedicationReminders(int id, String time, String daysOfWeek, String medicationName)
     {
         this.id = id;
         this.time = time;
+        this.daysOfWeek = daysOfWeek;
         this.medicationName = medicationName;
     }
 
-    public MedicationReminders(String time, String medicationName)
+    public MedicationReminders(String time, String daysOfWeek, String medicationName)
     {
         this.time = time;
+        this.daysOfWeek = daysOfWeek;
         this.medicationName = medicationName;
     }
 
@@ -40,6 +43,11 @@ public class MedicationReminders {
     public void setTime(String time)
     {
         this.time = time;
+    }
+
+    public void setDaysOfWeek(String daysOfWeek)
+    {
+        this.daysOfWeek = daysOfWeek;
     }
 
     public void setMedicationName(String medicationName)
@@ -55,6 +63,11 @@ public class MedicationReminders {
     public String getTime()
     {
         return this.time;
+    }
+
+    public String getDaysOfWeek ()
+    {
+        return this.daysOfWeek;
     }
 
     public String getMedicationName()
