@@ -49,4 +49,10 @@
         android:layout_below="@+id/takePhotoButton"
         android:layout_alignParentStart="true" />
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="128dp"
+        android:id="@+id/imageView"
+        android:layout_below="@+id/addMedicationButton" />
+
 </RelativeLayout>

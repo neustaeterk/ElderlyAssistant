@@ -104,7 +104,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
                 Log.d("dims ", "" + photoW + ", " + photoH);
 
-// Determine how much to scale down the image
+                // Determine how much to scale down the image
                 int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
 
                 // Decode the image file into a Bitmap sized to fill the View
@@ -113,6 +113,7 @@ public class ScheduleActivity extends AppCompatActivity {
                 bmOptions.inPurgeable = true;
 
                 Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+                Log.d("photo: ", "Scaled Dims: Height: " + bmOptions.outHeight + ", Width: " + bmOptions.outWidth);
                 mImageView.setImageBitmap(bitmap);
 
                 sendNotification(bitmap, medName);
