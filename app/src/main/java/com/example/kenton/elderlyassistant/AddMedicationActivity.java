@@ -9,6 +9,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
@@ -113,6 +116,7 @@ public class AddMedicationActivity extends AppCompatActivity {
 
     private Bitmap scaleImage(String mCurrentPhotoPath)
     {
+        Bitmap bitmap;
         ImageView mImageView = (ImageView) findViewById(R.id.imageView);
         // Get the dimensions of the View
         int targetW = mImageView.getWidth();
@@ -159,8 +163,16 @@ public class AddMedicationActivity extends AppCompatActivity {
         //bmOptions.inSampleSize = inSampleSize;
         bmOptions.inPurgeable = true;
 
-        Bitmap bitmap1 = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        Bitmap bitmap = Bitmap.createScaledBitmap(bitmap1, 256, 256, false);
+        Bitmap bitmap_decoded = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+
+        if (bitmap_decoded != null)
+        {
+            bitmap = Bitmap.createScaledBitmap(bitmap_decoded, 256, 256, false);
+        }
+        else
+        {
+            bitmap = null;
+        }
         mImageView.setImageBitmap(bitmap);
 
         return bitmap;
@@ -221,7 +233,7 @@ public class AddMedicationActivity extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 
-        long futureInMillis = SystemClock.elapsedRealtime() + 10000;
+        long futureInMillis = SystemClock.elapsedRealtime() + 5000;
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
         //alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent );
         //alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
@@ -264,6 +276,11 @@ public class AddMedicationActivity extends AppCompatActivity {
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
         mBuilder.setContentIntent(resultPendingIntent);
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        mBuilder.setSound(alarmSound);
+        mBuilder.setLights(Color.BLUE, 500, 500);
+        long[] pattern = {500,500,500,500,500,500,500,500,500};
+        mBuilder.setVibrate(pattern);
 
         return mBuilder.build();
     }
