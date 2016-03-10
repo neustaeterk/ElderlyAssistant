@@ -87,13 +87,15 @@ public class ScheduleActivity extends AppCompatActivity {
             public void onClick(View V) {
                 ImageView mImageView = (ImageView) findViewById(R.id.imageView);
                 // Get the dimensions of the View
-                int targetW = mImageView.getWidth();
-                int targetH = mImageView.getHeight();
+                //int targetW = mImageView.getWidth();
+                //int targetH = mImageView.getHeight();
+                int targetW = 656;
+                int targetH = 256;
                 MedicationReminders medicationReminders = db.getMedicationReminder(1);
                 String mCurrentPhotoPath = medicationReminders.getPhotoDirectory();
                 String medName = medicationReminders.getMedicationName();
                 Log.d("Path", mCurrentPhotoPath);
-                Log.d("TargetDims ", "" + targetH + ", " + targetW);
+                Log.d("TargetDims ", "" + targetW + ", " + targetH);
 
                 // Get the dimensions of the bitmap
                 BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -105,7 +107,8 @@ public class ScheduleActivity extends AppCompatActivity {
                 Log.d("dims ", "" + photoW + ", " + photoH);
 
                 // Determine how much to scale down the image
-                int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+                //int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+                int scaleFactor = photoH/targetH;
 
                 // Decode the image file into a Bitmap sized to fill the View
                 bmOptions.inJustDecodeBounds = false;

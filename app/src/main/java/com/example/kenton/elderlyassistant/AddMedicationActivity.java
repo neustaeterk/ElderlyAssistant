@@ -31,7 +31,7 @@ public class AddMedicationActivity extends AppCompatActivity {
     String photoName;
     String photoDir;
     long ID;
-    boolean photoTaken = false;
+    boolean photoTaken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +44,7 @@ public class AddMedicationActivity extends AppCompatActivity {
         final DatabaseHelper db = new DatabaseHelper(this);
         final PhotoManager photoManager = new PhotoManager(this);
         final MedicationReminders medicationReminders = new MedicationReminders();
+        photoTaken = false;
 
         Button takePhotoButton = (Button) findViewById(R.id.takePhotoButton) ;
         takePhotoButton.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +102,7 @@ public class AddMedicationActivity extends AppCompatActivity {
                 //sendNotification(bitmap, medName);
                 //scheduleNotification(getNotification(medName, medPhoto), Integer.parseInt(hour), Integer.parseInt(minute));
                 //scheduleNotification(getNotification(medName, medicationReminders.getPhotoDirectory()), Integer.parseInt(hour), Integer.parseInt(minute));
-                scheduleNotification(getNotification(medName), Integer.parseInt(hour), Integer.parseInt(minute));
+                scheduleNotification(getNotification(medName, medicationReminders.getPhotoDirectory()), Integer.parseInt(hour), Integer.parseInt(minute));
 
 
                 finish();
@@ -119,8 +120,8 @@ public class AddMedicationActivity extends AppCompatActivity {
         //MedicationReminders medicationReminders = db.getMedicationReminder(1);
         //String mCurrentPhotoPath = medicationReminders.getPhotoDirectory();
         //String medName = medicationReminders.getMedicationName();
-        Log.d("Path", mCurrentPhotoPath);
-        Log.d("TargetDims ", "" + targetH + ", " + targetW);
+        Log.d("Path", "" + mCurrentPhotoPath);
+        Log.d("TargetDims ", "" + targetW + ", " + targetH);
 
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -132,14 +133,34 @@ public class AddMedicationActivity extends AppCompatActivity {
         Log.d("dims ", "" + photoW + ", " + photoH);
 
         // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        //int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        //int scaleFactor = photoH/256;
+        int scaleFactor = 8;
+        int inSampleSize = 1;
+
+        /*
+        if (photoH > targetH || photoW > targetW) {
+
+            final int halfHeight = photoH / 2;
+            final int halfWidth = photoW / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > targetH
+                    && (halfWidth / inSampleSize) > targetW) {
+                inSampleSize *= 2;
+            }
+        }
+        */
 
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inSampleSize = scaleFactor;
+        //bmOptions.inSampleSize = inSampleSize;
         bmOptions.inPurgeable = true;
 
-        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        Bitmap bitmap1 = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        Bitmap bitmap = Bitmap.createScaledBitmap(bitmap1, 256, 256, false);
         mImageView.setImageBitmap(bitmap);
 
         return bitmap;
@@ -188,7 +209,7 @@ public class AddMedicationActivity extends AppCompatActivity {
 
         // Set the alarm to start at approximately 2:00 p.m.
         Calendar calendar = Calendar.getInstance();
-        //calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
 
@@ -202,12 +223,12 @@ public class AddMedicationActivity extends AppCompatActivity {
 
         long futureInMillis = SystemClock.elapsedRealtime() + 10000;
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
-
+        //alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent );
         //alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
         //        AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
-    private Notification getNotification(String medName) { //, String photoDir
+    private Notification getNotification(String medName, String photoDir) {
         int mId = 1;
         Bitmap medPhoto = scaleImage(photoDir);
         NotificationCompat.Builder mBuilder =
@@ -217,10 +238,13 @@ public class AddMedicationActivity extends AppCompatActivity {
                         .setContentTitle("Scheduled Medication")
                         .setContentText("Time to take " + medName);
 
-        //NotificationCompat.BigPictureStyle bigPicStyle = new NotificationCompat.BigPictureStyle();
-        //bigPicStyle.bigPicture(medPhoto);
-        //bigPicStyle.setBigContentTitle("Time to take " + medName);
-        //mBuilder.setStyle(bigPicStyle);
+        if (medPhoto != null)
+        {
+            NotificationCompat.BigPictureStyle bigPicStyle = new NotificationCompat.BigPictureStyle();
+            bigPicStyle.bigPicture(medPhoto);
+            bigPicStyle.setBigContentTitle("Time to take " + medName);
+            mBuilder.setStyle(bigPicStyle);
+        }
 
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, ScheduleActivity.class);
