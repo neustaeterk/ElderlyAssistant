@@ -60,7 +60,7 @@ public class PhotoManager {
                         Uri.fromFile(photoFile));
                 activity.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                 //make the photo available to see in the user's gallery
-                galleryAddPic();
+                //galleryAddPic();
             }
         }
     }

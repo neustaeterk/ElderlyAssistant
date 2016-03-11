@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical"
-    android:background="#00FFFF"
     android:id="@+id/list_medications_textview">
 
 </TextView>
