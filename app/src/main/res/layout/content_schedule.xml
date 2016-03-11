@@ -44,10 +44,18 @@
         android:layout_below="@+id/deleteRemindersButton"
         android:layout_alignParentStart="true" />
 
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="All Medication List"
+        android:id="@+id/medicationListButton"
+        android:layout_below="@+id/sendNotificationButton"
+        android:layout_alignParentStart="true" />
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="128dp"
         android:id="@+id/imageView"
-        android:layout_below="@+id/sendNotificationButton" />
+        android:layout_below="@+id/medicationListButton" />
 
 </RelativeLayout>

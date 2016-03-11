@@ -81,6 +81,15 @@ public class ScheduleActivity extends AppCompatActivity {
             }
         });
 
+        Button allMedButton = (Button) findViewById(R.id.medicationListButton);
+        allMedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ScheduleActivity.this, MedicationsList.class);
+                startActivity(intent);
+            }
+        });
+
         Button sendNotificationButton = (Button) findViewById(R.id.sendNotificationButton) ;
         sendNotificationButton.setOnClickListener(new View.OnClickListener() {
             @Override
