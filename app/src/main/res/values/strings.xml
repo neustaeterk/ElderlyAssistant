@@ -62,4 +62,5 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_schedule">ScheduleActivity</string>
     <string name="title_activity_add_medication">AddMedicationActivity</string>
+    <string name="title_activity_medications_list">MedicationsList</string>
 </resources>
