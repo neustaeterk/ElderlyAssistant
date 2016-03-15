@@ -15,7 +15,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 5;
 
     // database and table names
     private static final String DATABASE_NAME = "reminders.db";
@@ -28,6 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_DAYS = "daysOfWeek";
     private static final String KEY_PHOTO_NAME = "photoName";
     private static final String KEY_PHOTO_DIR = "photoDir";
+    private static final String KEY_DISMISSED = "dismissed";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -42,7 +43,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + KEY_DAYS + " TEXT,"
                 + KEY_MED_NAME + " TEXT,"
                 + KEY_PHOTO_NAME + " TEXT,"
-                + KEY_PHOTO_DIR + " TEXT" + ")";
+                + KEY_PHOTO_DIR + " TEXT,"
+                + KEY_DISMISSED + " INTEGER" + ")";
         sqLiteDatabase.execSQL(CREATE_CONTACTS_TABLE);
     }
 
@@ -66,6 +68,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_MED_NAME, medReminder.getMedicationName());
         values.put(KEY_PHOTO_NAME, medReminder.getPhotoName());
         values.put(KEY_PHOTO_DIR, medReminder.getPhotoDirectory());
+        values.put(KEY_DISMISSED, medReminder.getDismissed());
 
         // Inserting Row
         long id = db.insert(TABLE_NAME, null, values);
@@ -78,14 +81,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_NAME, new String[] { KEY_ID,
-                        KEY_MED_NAME, KEY_TIME, KEY_DAYS, KEY_PHOTO_NAME, KEY_PHOTO_DIR }, KEY_ID + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
+                        KEY_MED_NAME, KEY_TIME, KEY_DAYS, KEY_PHOTO_NAME, KEY_PHOTO_DIR, KEY_DISMISSED },
+                        KEY_ID + "=?",
+                        new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
         MedicationReminders medReminder = new MedicationReminders(Integer.parseInt(cursor.getString(0)),
                 cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4),
-                cursor.getString(5));
+                cursor.getString(5), Integer.parseInt(cursor.getString(6)));
 
         return medReminder;
     }
@@ -108,6 +112,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 medReminder.setMedicationName(cursor.getString(3));
                 medReminder.setPhotoName(cursor.getString(4));
                 medReminder.setPhotoDirectory(cursor.getString(5));
+                medReminder.setDismissed(Integer.parseInt(cursor.getString(6)));
                 // Adding contact to list
                 reminderList.add(medReminder);
             } while (cursor.moveToNext());
@@ -136,6 +141,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_MED_NAME, medReminder.getMedicationName());
         values.put(KEY_PHOTO_NAME, medReminder.getPhotoName());
         values.put(KEY_PHOTO_DIR, medReminder.getPhotoDirectory());
+        values.put(KEY_DISMISSED, medReminder.getDismissed());
 
         // updating row
         return db.update(TABLE_NAME, values, KEY_ID + " = ?",
