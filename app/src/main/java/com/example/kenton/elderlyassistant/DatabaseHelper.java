@@ -80,10 +80,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public MedicationReminders getMedicationReminder(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_NAME, new String[] { KEY_ID,
-                        KEY_MED_NAME, KEY_TIME, KEY_DAYS, KEY_PHOTO_NAME, KEY_PHOTO_DIR, KEY_DISMISSED },
-                        KEY_ID + "=?",
-                        new String[] { String.valueOf(id) }, null, null, null, null);
+        //Cursor cursor = db.query(TABLE_NAME, new String[] { KEY_ID,
+        //                KEY_MED_NAME, KEY_TIME, KEY_DAYS, KEY_PHOTO_NAME, KEY_PHOTO_DIR, KEY_DISMISSED },
+        //                KEY_ID + "=?",
+        //                new String[] { String.valueOf(id) }, null, null, null, null);
+        Cursor cursor = db.query(TABLE_NAME, null, KEY_ID + "=?",
+                                  new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
