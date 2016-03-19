@@ -1,6 +1,7 @@
 package com.example.kenton.elderlyassistant;
 
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,7 +37,7 @@ public class MedicationsListFragment extends Fragment {
         mMedList = mDb.getAllReminders();
 
         ArrayList<String> medicationsNames = new ArrayList<String>();
-        ArrayList medicationDismiss = new ArrayList();
+        ArrayList<Integer> medicationDismiss = new ArrayList<Integer>();
 
         for (int i = 0; i < mMedList.size();i++){
             medicationsNames.add(mMedList.get(i).getMedicationName());
@@ -51,12 +52,36 @@ public class MedicationsListFragment extends Fragment {
         mMedListAdapter = new ArrayAdapter<String>
                 (getActivity(), R.layout.list_medications, R.id.list_medications_textview, medicationsNames);
 
-        listView.setAdapter(mMedListAdapter);
+        //listView.setAdapter(mMedListAdapter);
+
+        CustomArrayAdapter mMedListAdapter2 = new CustomArrayAdapter(getActivity(), medicationsNames, medicationDismiss);
+        listView.setAdapter(mMedListAdapter2);
 
         //View view = getViewByPosition(0, listView);
         //view.setBackgroundColor(Color.parseColor("red"));
 
-        //int count = mMedListAdapter.getCount();
+        /*
+        int count = mMedListAdapter.getCount();
+        Log.d("List ", "Number of items: " + count);
+        int firstPos = listView.getFirstVisiblePosition();
+        Log.d("ListView ", "First visible position: " + firstPos);
+        int listCount = listView.getChildCount();
+        Log.d("ListView ", "Number of items: " + listCount);
+        int lastPos = listView.getLastVisiblePosition();
+        Log.d("ListView ", "Last visible position: " + lastPos);
+        View view = mMedListAdapter.getView(firstPos, null, listView);
+        view.setBackgroundColor(Color.GREEN);
+        */
+
+        //View view2 = listView.getChildAt(firstPos);
+        //View view3 = listView.getAdapter().getView(0, view2, listView);
+        //view3.setBackgroundColor(Color.GREEN);
+
+        //TextView tv = (TextView)view2.findViewById(R.id.list_medications_textview);
+        //tv.setText("some new text");
+
+        //mMedListAdapter.notifyDataSetChanged();
+
         //int pos = 0;
         //View view = mMedListAdapter.getView(pos, (TextView)rootView.findViewById(R.id.list_medications_textview), listView);
         //view.setBackgroundColor(Color.parseColor("red"));

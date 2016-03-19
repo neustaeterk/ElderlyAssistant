@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View V) {
                 //Intent intent = new Intent(MainActivity.this, CrazyFactsActivity.class) ;
                 //startActivity(intent);
-                sendTextMessage();
+                sendTextMessage("");
             }
         });
 
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void sendTextMessage()
+    private void sendTextMessage(String message)
     {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String contactNumber = sharedPreferences.getString("contact_number", "preference not found");
