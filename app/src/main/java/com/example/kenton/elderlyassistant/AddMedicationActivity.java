@@ -55,7 +55,8 @@ public class AddMedicationActivity extends AppCompatActivity {
             @Override
             public void onClick(View V) {
                 Log.d("Starting Camera: ", "Initializing camera...");
-                photoManager.takePicture();
+                String directory = getString(R.string.medication_photos_directory);
+                photoManager.takePicture(directory);
                 photoName = photoManager.getPhotoName();
                 photoDir = photoManager.getPhotoDirectory();
                 //start a new entry to the database with the photo name and directory
@@ -68,6 +69,12 @@ public class AddMedicationActivity extends AppCompatActivity {
                 medicationReminders.setId(ID);
                 //update boolean so that the add button updates the entry already added
                 photoTaken = true;
+
+                Context context = getApplicationContext();
+                CharSequence text = "Picture Saved";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
             }
         });
 
@@ -304,7 +311,7 @@ public class AddMedicationActivity extends AppCompatActivity {
         mBuilder.setContentIntent(resultPendingIntent);
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         mBuilder.setSound(alarmSound);
-        mBuilder.setLights(Color.BLUE, 500, 500);
+        mBuilder.setLights(Color.GREEN, 500, 500);
         long[] pattern = {500,500,500,500,500,500,500,500,500};
         mBuilder.setVibrate(pattern);
 

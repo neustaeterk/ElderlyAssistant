@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,11 +39,13 @@ public class MedicationsListFragment extends Fragment {
 
         ArrayList<String> medicationsNames = new ArrayList<String>();
         ArrayList<Integer> medicationDismiss = new ArrayList<Integer>();
+        ArrayList<MedicationReminders> reminders = new ArrayList<MedicationReminders>();
 
         for (int i = 0; i < mMedList.size();i++){
             medicationsNames.add(mMedList.get(i).getMedicationName());
             //Log.d("XXXXXXX", medicationsNames.get(i));
             medicationDismiss.add(mMedList.get(i).getDismissed());
+            reminders.add(mMedList.get(i));
         }
 
         View rootView = inflater.inflate(R.layout.fragment_medications_list, container, false);
@@ -54,8 +57,10 @@ public class MedicationsListFragment extends Fragment {
 
         //listView.setAdapter(mMedListAdapter);
 
-        CustomArrayAdapter mMedListAdapter2 = new CustomArrayAdapter(getActivity(), medicationsNames, medicationDismiss);
+        CustomArrayAdapter mMedListAdapter2 = new CustomArrayAdapter(getActivity(), medicationsNames, reminders);
         listView.setAdapter(mMedListAdapter2);
+
+
 
         //View view = getViewByPosition(0, listView);
         //view.setBackgroundColor(Color.parseColor("red"));

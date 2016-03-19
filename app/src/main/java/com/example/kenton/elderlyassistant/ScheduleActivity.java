@@ -1,11 +1,13 @@
 package com.example.kenton.elderlyassistant;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -183,6 +185,7 @@ public class ScheduleActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     private void sendNotification(Bitmap photo, String medName)

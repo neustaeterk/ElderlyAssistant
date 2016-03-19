@@ -40,7 +40,7 @@ public class PhotoManager {
         return imageFileDirectory;
     }
 
-    public void takePicture()
+    public void takePicture(String directory)
     {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -48,7 +48,7 @@ public class PhotoManager {
             // Create the File where the photo should go
             File photoFile = null;
             try {
-                photoFile = createImageFile();
+                photoFile = createImageFile(directory);
             } catch (IOException ex) {
                 // Error occurred while creating the File
                 Log.d("Error: ", "Could not create Image File");
@@ -65,13 +65,13 @@ public class PhotoManager {
         }
     }
 
-    private File createImageFile() throws IOException {
+    private File createImageFile(String directory) throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         imageFileName = "JPEG_" + timeStamp + "_";
         File photosDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
-        File storageDir = new File(photosDir + "/ElderlyAssistant/Medication_Photos");
+        File storageDir = new File(photosDir + directory);
 
         // keep the storage directory to be able to be retrieved later
         //imageFileDirectory = storageDir.getPath();
