@@ -58,4 +58,12 @@
         android:layout_below="@+id/goHomeButton"
         android:layout_alignParentStart="true" />
 
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Set your home address"
+        android:id="@+id/setAddressButton"
+        android:layout_below="@+id/medicationReminderButton"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>
