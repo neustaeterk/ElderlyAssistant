@@ -3,6 +3,8 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
 
+
+    <!-- Other Strings -->
     <string name="medication_photos_directory">/ElderlyAssistant/Medication_Photos</string>
 
     <!-- Strings related to Settings -->

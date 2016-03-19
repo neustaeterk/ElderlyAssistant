@@ -45,8 +45,8 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Send Notification"
-        android:id="@+id/sendNotificationButton"
+        android:text="Directions Home"
+        android:id="@+id/goHomeButton"
         android:layout_below="@+id/getGPSButton"
         android:layout_alignParentStart="true" />
 
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:text="Medication Reminders"
         android:id="@+id/medicationReminderButton"
-        android:layout_below="@+id/sendNotificationButton"
+        android:layout_below="@+id/goHomeButton"
         android:layout_alignParentStart="true" />
 
 </RelativeLayout>
