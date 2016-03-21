@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.sql.Time;
 import java.util.Calendar;
@@ -54,7 +55,8 @@ public class AddMedicationActivity extends AppCompatActivity {
             @Override
             public void onClick(View V) {
                 Log.d("Starting Camera: ", "Initializing camera...");
-                photoManager.takePicture();
+                String directory = getString(R.string.medication_photos_directory);
+                photoManager.takePicture(directory);
                 photoName = photoManager.getPhotoName();
                 photoDir = photoManager.getPhotoDirectory();
                 //start a new entry to the database with the photo name and directory
@@ -67,6 +69,12 @@ public class AddMedicationActivity extends AppCompatActivity {
                 medicationReminders.setId(ID);
                 //update boolean so that the add button updates the entry already added
                 photoTaken = true;
+
+                Context context = getApplicationContext();
+                CharSequence text = "Picture Saved";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
             }
         });
 
@@ -79,36 +87,57 @@ public class AddMedicationActivity extends AppCompatActivity {
                 EditText editText = (EditText) findViewById(R.id.medicationName);
                 String medName = editText.getText().toString();
 
-                TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
-                String hour = "" + timePicker.getCurrentHour(); // getHour() for API 23
-                String minute = "" + timePicker.getCurrentMinute(); //getMinute() for API 23
-                String time = hour + ":" + minute;
-
-                //just for testing
-                String daysOfWeek = "M";
-
-                medicationReminders.setTime(time);
-                medicationReminders.setDaysOfWeek(daysOfWeek);
-                medicationReminders.setMedicationName(medName);
-
-                //if the photo was taken we update, otherwise add to database
-                if (photoTaken)
+                if (medName.equals(""))
                 {
-                    db.updateReminder(medicationReminders);
+                    Context context = getApplicationContext();
+                    CharSequence text = "Please enter a medication name";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
                 }
                 else
                 {
-                    db.addReminder(medicationReminders);
+                    TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
+                    String hour = "" + timePicker.getCurrentHour(); // getHour() for API 23
+                    String minute = "" + timePicker.getCurrentMinute(); //getMinute() for API 23
+                    String time = hour + ":" + minute;
+
+                    //just for testing
+                    String daysOfWeek = "DMTWJFS";
+
+                    medicationReminders.setTime(time);
+                    medicationReminders.setDaysOfWeek(daysOfWeek);
+                    medicationReminders.setMedicationName(medName);
+
+                    //if the photo was taken we update, otherwise add to database
+                    if (photoTaken)
+                    {
+                        db.updateReminder(medicationReminders);
+                    }
+                    else
+                    {
+                        ID = db.addReminder(medicationReminders);
+                        medicationReminders.setId(ID);
+                        medicationReminders.setDismissed(0);
+                    }
+
+                    int id = (int) medicationReminders.getId();
+                    //Bitmap medPhoto = scaleImage(medicationReminders.getPhotoDirectory());
+                    //sendNotification(bitmap, medName);
+                    //scheduleNotification(getNotification(medName, medPhoto), Integer.parseInt(hour), Integer.parseInt(minute));
+                    //scheduleNotification(getNotification(medName, medicationReminders.getPhotoDirectory()), Integer.parseInt(hour), Integer.parseInt(minute));
+                    scheduleNotification(getNotification(medName, medicationReminders.getPhotoDirectory(), id),
+                            Integer.parseInt(hour), Integer.parseInt(minute), id);
+
+                    //Display confirmation message
+                    Context context = getApplicationContext();
+                    CharSequence text = "The reminder was added successfully";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    finish();
                 }
-
-                //Bitmap medPhoto = scaleImage(medicationReminders.getPhotoDirectory());
-                //sendNotification(bitmap, medName);
-                //scheduleNotification(getNotification(medName, medPhoto), Integer.parseInt(hour), Integer.parseInt(minute));
-                //scheduleNotification(getNotification(medName, medicationReminders.getPhotoDirectory()), Integer.parseInt(hour), Integer.parseInt(minute));
-                scheduleNotification(getNotification(medName, medicationReminders.getPhotoDirectory()), Integer.parseInt(hour), Integer.parseInt(minute));
-
-
-                finish();
             }
         });
 
@@ -217,8 +246,8 @@ public class AddMedicationActivity extends AppCompatActivity {
         mNotificationManager.notify(mId, mBuilder.build());
     }
 
-    private void scheduleNotification(Notification notification, int hour, int minute) {
-
+    private void scheduleNotification(Notification notification, int hour, int minute, long Id) {
+        Log.d("ID ", "In scheduleNotification: " + Id);
         // Set the alarm to start at approximately 2:00 p.m.
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -228,21 +257,23 @@ public class AddMedicationActivity extends AppCompatActivity {
         // With setInexactRepeating(), you have to use one of the AlarmManager interval
         // constants--in this case, AlarmManager.INTERVAL_DAY.
         Intent notificationIntent = new Intent(this, NotificationPublisher.class);
-        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, (int) Id);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int) Id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-
+        //PendingIntent.
         long futureInMillis = SystemClock.elapsedRealtime() + 5000;
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
         //alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent );
         //alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
         //        AlarmManager.INTERVAL_DAY, pendingIntent);
+        //alarmManager.cancel(pendingIntent);
     }
 
-    private Notification getNotification(String medName, String photoDir) {
-        int mId = 1;
+    private Notification getNotification(String medName, String photoDir, int id) {
+
         Bitmap medPhoto = scaleImage(photoDir);
+        //Intent dismissIntent = new Intent(this, )
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_notifications_black_24dp)
@@ -260,6 +291,7 @@ public class AddMedicationActivity extends AppCompatActivity {
 
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, ScheduleActivity.class);
+        resultIntent.putExtra("medId", id);
 
         // The stack builder object will contain an artificial back stack for the
         // started Activity.
@@ -275,10 +307,11 @@ public class AddMedicationActivity extends AppCompatActivity {
                         0,
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
+        mBuilder.addAction(R.drawable.ic_info_black_24dp, "Dismiss Alarm", resultPendingIntent);
         mBuilder.setContentIntent(resultPendingIntent);
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         mBuilder.setSound(alarmSound);
-        mBuilder.setLights(Color.BLUE, 500, 500);
+        mBuilder.setLights(Color.GREEN, 500, 500);
         long[] pattern = {500,500,500,500,500,500,500,500,500};
         mBuilder.setVibrate(pattern);
 

@@ -16,6 +16,7 @@ public class MedicationReminders {
     String daysOfWeek;
     String photoName;
     String photoDirectory;
+    int dismissed;
 
     public  MedicationReminders()
     {
@@ -23,7 +24,7 @@ public class MedicationReminders {
     }
 
     public MedicationReminders(long id, String time, String daysOfWeek, String medicationName,
-                               String photoName, String photoDirectory)
+                               String photoName, String photoDirectory, int dismissed)
     {
         this.id = id;
         this.time = time;
@@ -31,6 +32,7 @@ public class MedicationReminders {
         this.medicationName = medicationName;
         this.photoName = photoName;
         this.photoDirectory = photoDirectory;
+        this.dismissed = dismissed;
     }
 
     public MedicationReminders(long id, String time, String daysOfWeek, String medicationName)
@@ -39,6 +41,7 @@ public class MedicationReminders {
         this.time = time;
         this.daysOfWeek = daysOfWeek;
         this.medicationName = medicationName;
+        this.dismissed = 0;
     }
 
     public MedicationReminders(String time, String daysOfWeek, String medicationName)
@@ -46,12 +49,14 @@ public class MedicationReminders {
         this.time = time;
         this.daysOfWeek = daysOfWeek;
         this.medicationName = medicationName;
+        this.dismissed = 0;
     }
 
     public MedicationReminders(String photoName, String photoDirectory)
     {
         this.photoName = photoName;
         this.photoDirectory = photoDirectory;
+        this.dismissed = 0;
     }
 
     public void setId(long id)
@@ -84,6 +89,11 @@ public class MedicationReminders {
         this.photoDirectory = photoDirectory;
     }
 
+    public void setDismissed(int dismissed)
+    {
+        this.dismissed = dismissed;
+    }
+
     public long getId()
     {
         return this.id;
@@ -112,5 +122,20 @@ public class MedicationReminders {
     public String getPhotoDirectory()
     {
         return this.photoDirectory;
+    }
+
+    public int getDismissed()
+    {
+        return this.dismissed;
+    }
+
+    public String toString()
+    {
+        return "Id: " + id + " ,Time: " +
+                time + " ,Day: " + daysOfWeek +
+                " ,Name: " + medicationName +
+                " ,Photo Name: " + photoName +
+                " ,Photo Directory: " + photoDirectory +
+                " ,Dismissed: " + dismissed;
     }
 }
