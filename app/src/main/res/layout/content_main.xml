@@ -10,7 +10,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.kenton.elderlyassistant.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_main"
+    >
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -18,52 +20,94 @@
         android:text="Hello World!"
         android:id="@+id/textView" />
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Send Message"
-        android:id="@+id/sendMessageButton"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentStart="true" />
+    <LinearLayout
+        android:id="@+id/up"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal"
+        android:layout_weight="33">
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Select a contact Person"
-        android:id="@+id/findContactButton"
-        android:layout_below="@+id/sendMessageButton"
-        android:layout_alignParentStart="true" />
+        <Button
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Get GPS coordinates"
-        android:id="@+id/getGPSButton"
-        android:layout_below="@+id/findContactButton"
-        android:layout_alignParentStart="true" />
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".50"
+            android:text="Send Message"
+            android:id="@+id/sendMessageButton"
+            android:layout_alignParentStart="true"
+            />
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Directions Home"
-        android:id="@+id/goHomeButton"
-        android:layout_below="@+id/getGPSButton"
-        android:layout_alignParentStart="true" />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".50"
+            android:text="Select a contact Person"
+            android:id="@+id/findContactButton"
+            android:layout_alignParentStart="true"
+            />
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Medication Reminders"
-        android:id="@+id/medicationReminderButton"
-        android:layout_below="@+id/goHomeButton"
-        android:layout_alignParentStart="true" />
+    </LinearLayout>
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Set your home address"
-        android:id="@+id/setAddressButton"
-        android:layout_below="@+id/medicationReminderButton"
-        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:id="@+id/mid"
+        android:layout_below="@+id/up"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal"
+        android:layout_weight="0.3">
+
+        <Button
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".50"
+            android:text="Get GPS coordinates"
+            android:id="@+id/getGPSButton"
+            android:layout_below="@+id/up"
+            android:layout_alignParentStart="true" />
+            />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".50"
+            android:text="Directions Home"
+            android:id="@+id/goHomeButton"
+            android:layout_below="@+id/getGPSButton"
+            android:layout_alignParentStart="true" />
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/butt"
+        android:layout_below="@+id/mid"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal"
+        android:layout_weight="0.3">
+
+        <Button
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".50"
+            android:text="Medication Reminders"
+            android:id="@+id/medicationReminderButton"
+            android:layout_alignParentStart="true" />
+        />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".50"
+            android:text="Set your home address"
+            android:id="@+id/setAddressButton"
+            android:layout_alignParentStart="true" />
+        />
+
+    </LinearLayout>
 
 </RelativeLayout>
+

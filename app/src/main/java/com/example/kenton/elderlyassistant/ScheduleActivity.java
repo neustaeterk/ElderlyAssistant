@@ -161,17 +161,17 @@ public class ScheduleActivity extends AppCompatActivity {
             }
         });
 
-        Button allMedButton = (Button) findViewById(R.id.medicationListButton) ;
-        allMedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View V) {
-                /*Log.d("Insert: ", "Inserting...");
-                db.addReminder(new MedicationReminders("10:00", "Pill 1"));
-                db.addReminder((new MedicationReminders("13:00", "Pill 2")));*/
-                Intent intent = new Intent(ScheduleActivity.this, MedicationsList.class) ;
-                startActivity(intent);
-            }
-        });
+//        Button allMedButton = (Button) findViewById(R.id.medicationListButton) ;
+//        allMedButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View V) {
+//                /*Log.d("Insert: ", "Inserting...");
+//                db.addReminder(new MedicationReminders("10:00", "Pill 1"));
+//                db.addReminder((new MedicationReminders("13:00", "Pill 2")));*/
+//                Intent intent = new Intent(ScheduleActivity.this, MedicationsList.class) ;
+//                startActivity(intent);
+//            }
+//        });
 
         Button cancelAlarmButton = (Button) findViewById(R.id.cancelAlarmButton) ;
         cancelAlarmButton.setOnClickListener(new View.OnClickListener() {
