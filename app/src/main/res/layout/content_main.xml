@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -14,100 +15,87 @@
     >
 
 
+>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"
         android:id="@+id/textView" />
 
+
     <LinearLayout
         android:id="@+id/up"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:orientation="horizontal"
-        android:layout_weight="33">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
         <Button
 
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".50"
-            android:text="Send Message"
             android:id="@+id/sendMessageButton"
-            android:layout_alignParentStart="true"
-            />
-
-        <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight=".50"
-            android:text="Select a contact Person"
+            android:layout_weight="1"
+            android:text="Send Message" />
+
+        <Button
             android:id="@+id/findContactButton"
-            android:layout_alignParentStart="true"
-            />
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Select a contact Person" />
 
     </LinearLayout>
 
 
     <LinearLayout
         android:id="@+id/mid"
-        android:layout_below="@+id/up"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:orientation="horizontal"
-        android:layout_weight="0.3">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
         <Button
 
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".50"
-            android:text="Get GPS coordinates"
             android:id="@+id/getGPSButton"
-            android:layout_below="@+id/up"
-            android:layout_alignParentStart="true" />
-            />
-
-        <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight=".50"
-            android:text="Directions Home"
+            android:layout_weight="1"
+            android:text="Get GPS coordinates" />
+
+        <Button
             android:id="@+id/goHomeButton"
-            android:layout_below="@+id/getGPSButton"
-            android:layout_alignParentStart="true" />
-            />
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Directions Home" />
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/butt"
-        android:layout_below="@+id/mid"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:orientation="horizontal"
-        android:layout_weight="0.3">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
         <Button
 
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".50"
-            android:text="Medication Reminders"
             android:id="@+id/medicationReminderButton"
-            android:layout_alignParentStart="true" />
-        />
-
-        <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight=".50"
-            android:text="Set your home address"
+            android:layout_weight="1"
+            android:text="Medication Reminders" />
+
+        <Button
             android:id="@+id/setAddressButton"
-            android:layout_alignParentStart="true" />
-        />
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Set your home address" />
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
 
