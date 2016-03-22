@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -34,7 +36,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.IOException;
 import java.security.Security;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -82,8 +87,16 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View V) {
                 String [] coordinates = getGPSCoordinates();
                 TextView textView = (TextView) findViewById(R.id.textView);
+                TextView textView2 = (TextView) findViewById(R.id.textView2);
                 String coordinatesString = "" + coordinates[0] + ", " + coordinates[1];
                 textView.setText(coordinatesString);
+                String[] testcoordinates = {"45.4951488","-73.5763037"};
+                if (!coordinates[0].equals("no location available")){
+                    String address = findAddress(testcoordinates);
+                    textView2.setText(address);
+                    Log.d("Address",address);
+                }
+
             }
         });
 
@@ -303,4 +316,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private String findAddress(String[] coordinates){
+        Geocoder geocoder = new Geocoder(this);
+        double latitude = Double.parseDouble(coordinates[0]);
+        double longitude = Double.parseDouble(coordinates[1]);
+        List<Address> addressList = new ArrayList<>();;
+        String address;
+
+        if(geocoder.isPresent()){
+            try {
+                addressList = geocoder.getFromLocation(latitude, longitude, 1);
+            }
+            catch(IOException geo){
+
+            }
+        }
+
+        if(!addressList.isEmpty()){
+            address = addressList.get(0).toString();
+        }
+        else{
+            address = "Address not found.";
+        }
+
+        return address;
+    }
 }
