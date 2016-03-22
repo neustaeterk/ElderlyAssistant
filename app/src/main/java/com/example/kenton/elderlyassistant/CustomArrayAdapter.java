@@ -73,6 +73,7 @@ public class CustomArrayAdapter extends ArrayAdapter<String>{
                                 // User clicked yes
                                 db.deleteReminder(reminders.get(position));
                                 //refresh list somehow
+
                             }
                         });
                         builderDelete.show();
@@ -86,6 +87,15 @@ public class CustomArrayAdapter extends ArrayAdapter<String>{
                         intent.putExtra("medId", medId);
                         context.startActivity(intent);
                         //refresh view
+                        reminders.clear();
+                        reminders.addAll(db.getAllReminders());
+                        values.clear();
+
+                        for (int i = 0; i < reminders.size();i++){
+                            values.add(reminders.get(i).getMedicationName());
+                        }
+
+
                     }
                 });
                 builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
@@ -100,7 +110,8 @@ public class CustomArrayAdapter extends ArrayAdapter<String>{
                 dialog.show();
             }
         });
-
+        this.notifyDataSetInvalidated();
+        this.notifyDataSetChanged();
         return rowView;
     }
 

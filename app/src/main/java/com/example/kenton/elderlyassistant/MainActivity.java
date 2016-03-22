@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -17,6 +19,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
@@ -33,11 +36,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.IOException;
 import java.security.Security;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_SELECT_PHONE_NUMBER = 1;
+    private static final int FORMAT_DEGREES = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,10 +85,18 @@ public class MainActivity extends AppCompatActivity {
         getGPSButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
-                double [] coordinates = getGPSCoordinates();
+                String [] coordinates = getGPSCoordinates();
                 TextView textView = (TextView) findViewById(R.id.textView);
+                TextView textView2 = (TextView) findViewById(R.id.textView2);
                 String coordinatesString = "" + coordinates[0] + ", " + coordinates[1];
                 textView.setText(coordinatesString);
+                String[] testcoordinates = {"45.4951488","-73.5763037"};
+                if (!coordinates[0].equals("no location available")){
+                    String address = findAddress(testcoordinates);
+                    textView2.setText(address);
+                    Log.d("Address",address);
+                }
+
             }
         });
 
@@ -185,19 +200,61 @@ public class MainActivity extends AppCompatActivity {
         textView.setText(contactNumber);
     }
 
-    private double[] getGPSCoordinates()
+    private String[] getGPSCoordinates()
     {
-        double [] coordinates = new double[2]; // [latitude, longitude]
+        String [] coordinates = new String[2]; // [latitude, longitude]
         // Acquire a reference to the system Location Manager
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = false;
+        boolean network_enabled = false;
+        try {
+            gps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch(Exception ex) {}
 
+        try {
+            network_enabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch(Exception ex) {}
+
+        if(!gps_enabled && !network_enabled) {
+            // notify user
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setMessage("Your location is disabled. Would you like to enable it?");
+            final Context context = this.getApplicationContext();
+            dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+                    Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(myIntent);
+                    //get gps
+                }
+            });
+            dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+
+                }
+            });
+            dialog.show();
+        }
         //String locationProvider = LocationManager.NETWORK_PROVIDER;
         String locationProvider = LocationManager.GPS_PROVIDER;
 
         try {
             Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
-            coordinates[0] = lastKnownLocation.getLatitude();
-            coordinates[1] = lastKnownLocation.getLongitude();
+            if (lastKnownLocation != null) {
+                coordinates[0] = (Location.convert(lastKnownLocation.getLatitude(), FORMAT_DEGREES));
+                coordinates[1] = (Location.convert(lastKnownLocation.getLongitude(), FORMAT_DEGREES));
+
+            } else {
+                coordinates[0] =("no location available");
+                coordinates[1] =("no location available");
+            }
+            ;
+
         }
         catch (SecurityException ex) {
             Log.d("Elderly Assistant: ", "Error creating location service: " + ex.getMessage());
@@ -259,4 +316,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private String findAddress(String[] coordinates){
+        Geocoder geocoder = new Geocoder(this);
+        double latitude = Double.parseDouble(coordinates[0]);
+        double longitude = Double.parseDouble(coordinates[1]);
+        List<Address> addressList = new ArrayList<>();;
+        String address;
+
+        if(geocoder.isPresent()){
+            try {
+                addressList = geocoder.getFromLocation(latitude, longitude, 1);
+            }
+            catch(IOException geo){
+
+            }
+        }
+
+        if(!addressList.isEmpty()){
+            address = addressList.get(0).toString();
+        }
+        else{
+            address = "Address not found.";
+        }
+
+        return address;
+    }
 }

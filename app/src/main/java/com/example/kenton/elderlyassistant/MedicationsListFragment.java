@@ -59,7 +59,7 @@ public class MedicationsListFragment extends Fragment {
 
         CustomArrayAdapter mMedListAdapter2 = new CustomArrayAdapter(getActivity(), medicationsNames, reminders);
         listView.setAdapter(mMedListAdapter2);
-
+        mMedListAdapter2.notifyDataSetChanged();
 
 
         //View view = getViewByPosition(0, listView);
