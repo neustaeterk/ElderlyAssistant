@@ -51,73 +51,91 @@ public class CustomArrayAdapter extends ArrayAdapter<String>{
             textView.setBackgroundColor(Color.RED);
         }
 
-        rowView.setOnClickListener(new View.OnClickListener() {
+        /*rowView.setOnClickListener(new View.OnClickListener() {
             public void onClick(final View v) {
                 String medName = values.get(position);
-                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setMessage("Choose an option")
-                        .setTitle(medName);
-                // Add the buttons
-                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User clicked delete button
-                        AlertDialog.Builder builderDelete = new AlertDialog.Builder(v.getContext());
-                        builderDelete.setTitle("Are you sure you want to delete this reminder?");
-                        builderDelete.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // User clicked cancel
-                            }
-                        });
-                        builderDelete.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // User clicked yes
-                                db.deleteReminder(reminders.get(position));
-                                //refresh list somehow
-
-                            }
-                        });
-                        builderDelete.show();
-                    }
-                });
-                builder.setNegativeButton("Edit", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User clicked edit
-                        Intent intent = new Intent(context, EditReminderActivity.class);
-                        int medId = (int) reminders.get(position).getId();
-                        intent.putExtra("medId", medId);
-                        context.startActivity(intent);
-                        //refresh view
-                        reminders.clear();
-                        reminders.addAll(db.getAllReminders());
-                        values.clear();
-
-                        for (int i = 0; i < reminders.size();i++){
-                            values.add(reminders.get(i).getMedicationName());
-                        }
-
-
-                    }
-                });
-                builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                        // no code required, the dialog is cancelled automatically
-                    }
-                });
-
-                // Create the AlertDialog
-                AlertDialog dialog = builder.create();
+                AlertDialog dialog = createDialog(v, medName, position);
                 dialog.show();
             }
         });
         this.notifyDataSetInvalidated();
         this.notifyDataSetChanged();
+        */
         return rowView;
     }
 
     public String getItem(int position){
 
         return values.get(position);
+    }
+
+    public MedicationReminders getItemAtPosition(int position)
+    {
+        return reminders.get(position);
+    }
+
+
+    /*
+     *  createDialog - creates the popup dialog which implements the "edit" and "delete" functions
+     */
+    private AlertDialog createDialog(View view, String medName, int pos)
+    {
+        final int position = pos;
+        final View v = view;
+        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+        builder.setMessage("Choose an option")
+                .setTitle(medName);
+        // Add the buttons
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked delete button
+                AlertDialog.Builder builderDelete = new AlertDialog.Builder(v.getContext());
+                builderDelete.setTitle("Are you sure you want to delete this reminder?");
+                builderDelete.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked cancel
+                    }
+                });
+                builderDelete.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked yes
+                        db.deleteReminder(reminders.get(position));
+                        //refresh list somehow
+
+                    }
+                });
+                builderDelete.show();
+            }
+        });
+        builder.setNegativeButton("Edit", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked edit
+                Intent intent = new Intent(context, EditReminderActivity.class);
+                int medId = (int) reminders.get(position).getId();
+                intent.putExtra("medId", medId);
+                context.startActivity(intent);
+                //refresh view
+                reminders.clear();
+                reminders.addAll(db.getAllReminders());
+                values.clear();
+
+                for (int i = 0; i < reminders.size();i++){
+                    values.add(reminders.get(i).getMedicationName());
+                }
+
+
+            }
+        });
+        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+                // no code required, the dialog is cancelled automatically
+            }
+        });
+
+        // Create the AlertDialog
+        AlertDialog dialog = builder.create();
+        return dialog;
     }
 
 }

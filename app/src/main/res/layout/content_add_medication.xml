@@ -16,7 +16,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Type the name of the medication:"
-        android:id="@+id/textTitle" />
+        android:id="@+id/textTitle"
+        android:singleLine="true"
+        android:imeOptions="actionDone"/>
 
     <EditText
         android:layout_width="fill_parent"
@@ -24,7 +26,8 @@
         android:id="@+id/medicationName"
         android:layout_alignParentStart="true"
         android:layout_alignEnd="@+id/timePicker"
-        android:layout_below="@+id/textTitle"/>
+        android:layout_below="@+id/textTitle"
+        android:singleLine="false" />
 
     <TimePicker
         android:layout_width="fill_parent"

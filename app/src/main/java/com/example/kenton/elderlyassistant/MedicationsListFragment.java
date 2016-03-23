@@ -1,5 +1,9 @@
 package com.example.kenton.elderlyassistant;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.v4.app.Fragment;
@@ -12,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +44,7 @@ public class MedicationsListFragment extends Fragment {
 
         ArrayList<String> medicationsNames = new ArrayList<String>();
         ArrayList<Integer> medicationDismiss = new ArrayList<Integer>();
-        ArrayList<MedicationReminders> reminders = new ArrayList<MedicationReminders>();
+        final ArrayList<MedicationReminders> reminders = new ArrayList<MedicationReminders>();
 
         for (int i = 0; i < mMedList.size();i++){
             medicationsNames.add(mMedList.get(i).getMedicationName());
@@ -50,16 +55,34 @@ public class MedicationsListFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_medications_list, container, false);
 
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_medications);
+        final ListView listView = (ListView) rootView.findViewById(R.id.listview_medications);
 
         mMedListAdapter = new ArrayAdapter<String>
                 (getActivity(), R.layout.list_medications, R.id.list_medications_textview, medicationsNames);
 
         //listView.setAdapter(mMedListAdapter);
 
-        CustomArrayAdapter mMedListAdapter2 = new CustomArrayAdapter(getActivity(), medicationsNames, reminders);
+        final CustomArrayAdapter mMedListAdapter2 = new CustomArrayAdapter(getActivity(), medicationsNames, reminders);
         listView.setAdapter(mMedListAdapter2);
-        mMedListAdapter2.notifyDataSetChanged();
+
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                MedicationReminders reminder = mMedListAdapter2.getItemAtPosition(position);
+                //MedicationReminders reminder = (MedicationReminders) o;
+                AlertDialog dialog = createDialog(view, position, mDb, reminder);
+                dialog.show();
+                reminders.clear();
+                reminders.addAll(mDb.getAllReminders());
+                mMedListAdapter2.notifyDataSetChanged();
+            }
+        });
+
+
+
+        //mMedListAdapter2.notifyDataSetChanged();
 
 
         //View view = getViewByPosition(0, listView);
@@ -105,4 +128,60 @@ public class MedicationsListFragment extends Fragment {
             return listView.getChildAt(childIndex);
         }
     }
+
+    /*
+     *  createDialog - creates the popup dialog which implements the "edit" and "delete" functions
+     */
+    private AlertDialog createDialog(View view, int pos, DatabaseHelper mDb, MedicationReminders mReminder)
+    {
+        final int position = pos;
+        final View v = view;
+        final DatabaseHelper db = mDb;
+        final MedicationReminders reminder = mReminder;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+        builder.setMessage("Choose an option")
+                .setTitle(reminder.getMedicationName());
+        // Add the buttons
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked delete button
+                AlertDialog.Builder builderDelete = new AlertDialog.Builder(v.getContext());
+                builderDelete.setTitle("Are you sure you want to delete this reminder?");
+                builderDelete.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked cancel
+                    }
+                });
+                builderDelete.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked yes
+                        db.deleteReminder(reminder);
+                    }
+                });
+                builderDelete.show();
+            }
+        });
+        builder.setNegativeButton("Edit", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked edit
+                Context context = getContext();
+                Intent intent = new Intent(context, EditReminderActivity.class);
+                int medId = (int) reminder.getId();
+                intent.putExtra("medId", medId);
+                context.startActivity(intent);
+            }
+        });
+        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+                // no code required, the dialog is cancelled automatically
+            }
+        });
+
+        // Create the AlertDialog
+        AlertDialog dialog = builder.create();
+        return dialog;
+    }
+
 }
