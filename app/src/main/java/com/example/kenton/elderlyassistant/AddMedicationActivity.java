@@ -20,10 +20,14 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -84,7 +88,29 @@ public class AddMedicationActivity extends AppCompatActivity {
             public void onClick(View V) {
                 Log.d("Insert: ", "Inserting...");
 
-                EditText editText = (EditText) findViewById(R.id.medicationName);
+                final EditText editText = (EditText) findViewById(R.id.medicationName);
+                editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId,
+                                                  KeyEvent event) {
+                        if (event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                            InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                            // NOTE: In the author's example, he uses an identifier
+                            // called searchBar. If setting this code on your EditText
+                            // then use v.getWindowToken() as a reference to your
+                            // EditText is passed into this callback as a TextView
+
+                            in.hideSoftInputFromWindow(v.getWindowToken(),
+                                    InputMethodManager.HIDE_NOT_ALWAYS);
+                            // Must return true here to consume event
+                            return true;
+
+                        }
+                        return false;
+                    }
+                });
+
                 String medName = editText.getText().toString();
 
                 if (medName.equals(""))
