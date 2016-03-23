@@ -36,12 +36,79 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/medicationName" />
 
+    <LinearLayout
+        android:id="@+id/days_of_week"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:layout_below="@+id/timePicker"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <CheckBox
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Sun"
+            android:id="@+id/checkBoxSunday"
+            android:layout_weight="1"
+            android:checked="true" />
+
+        <CheckBox
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Mon"
+            android:id="@+id/checkBoxMonday"
+            android:layout_weight="1"
+            android:checked="true"/>
+
+        <CheckBox
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Tue"
+            android:id="@+id/checkBoxTuesday"
+            android:layout_weight="1"
+            android:checked="true"/>
+
+        <CheckBox
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Wed"
+            android:id="@+id/checkBoxWednesday"
+            android:layout_weight="1"
+            android:checked="true"/>
+
+        <CheckBox
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Thu"
+            android:id="@+id/checkBoxThursday"
+            android:layout_weight="1"
+            android:checked="true"/>
+
+        <CheckBox
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Fri"
+            android:id="@+id/checkBoxFriday"
+            android:layout_weight="1"
+            android:checked="true"/>
+
+        <CheckBox
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Sat"
+            android:id="@+id/checkBoxSaturday"
+            android:layout_weight="1"
+            android:checked="true"/>
+
+    </LinearLayout>
+
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="TAKE A PHOTO OF MEDICATION"
         android:id="@+id/takePhotoButton"
-        android:layout_below="@+id/timePicker"
+        android:layout_below="@+id/days_of_week"
         android:layout_alignParentStart="true" />
 
     <Button
