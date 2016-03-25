@@ -83,21 +83,24 @@ public class MainActivity extends AppCompatActivity {
                 String [] coordinates = getGPSCoordinates();
                 coordinatesText = (TextView) findViewById(R.id.textView);
                 addressText = (TextView) findViewById(R.id.textView2);
-                String coordinatesString = "" + coordinates[0] + ", " + coordinates[1];
-                coordinatesText.setText(coordinatesString);
+                //String coordinatesString = "" + coordinates[0] + ", " + coordinates[1];
+                //coordinatesText.setText(coordinatesString);
 
-                String message = "Emergency received from location:\n https://maps.google.com/maps?q=" + coordinates[0] + "," + coordinates[1];
+                //String message = "Emergency received from location:\n https://maps.google.com/maps?q=" + coordinates[0] + "," + coordinates[1];
 
 
                 String[] testcoordinates = {"45.4951488","-73.5763037"};
-                if (!coordinates[0].equals("no location available")){
+                /*if (!coordinates[0].equals("no location available")){
                     String address = findAddress(testcoordinates);
                     addressText.setText(address);
-                    Log.d("Address",address);
-                    message = message + "\n" + address;
-                }
+                    Log.d("Address", address);
+                    if (!address.equals("Address not found.")) {
+                        message = message + "\n" + address;
+                    }
+                    sendTextMessage(message);
+                }*/
 
-                sendTextMessage(message);
+
             }
         });
 
@@ -206,18 +209,21 @@ public class MainActivity extends AppCompatActivity {
             if (!address.equals("Address not found."))
             {
                 message = address;
+                addressText.setText(address);
             }
-            message = message + "\nEmergency received from location: https://maps.google.com/maps?q=" + lat + "," + longitude;
-            sendTextMessage(message);
+
             try
             {
                 locationManager.removeUpdates(this);
                 locationManager.removeUpdates(locListenerNetwork);
+                message = message + "\nEmergency received from location: https://maps.google.com/maps?q=" + lat + "," + longitude;
+                sendTextMessage(message);
             }
             catch (SecurityException se)
             {
 
             }
+
         }
 
         // "Your LocationListener must implement several callback methods that the Location Manager
@@ -236,12 +242,26 @@ public class MainActivity extends AppCompatActivity {
     LocationListener locListenerNetwork = new LocationListener() {
         public void onLocationChanged(Location location) {
             // Called when a new location is found by the network location provider.
+
             displayLocation(location);
             Log.d("location", location.toString());
+            String lat = Location.convert(location.getLatitude(), FORMAT_DEGREES);
+            String longitude = Location.convert(location.getLongitude(), FORMAT_DEGREES);
+            String[] coordinates = {lat, longitude};
+            String address = findAddress(coordinates);
+            String message = "";
+            if (!address.equals("Address not found."))
+            {
+                message = address;
+                addressText.setText(address);
+            }
+
             try
             {
                 locationManager.removeUpdates(this);
-                locationManager.removeUpdates(locListenerGPS);
+                locationManager.removeUpdates(locListenerNetwork);
+                message = message + "\nNetwork\nEmergency received from location: https://maps.google.com/maps?q=" + lat + "," + longitude;
+                sendTextMessage(message);
             }
             catch (SecurityException se)
             {
@@ -341,7 +361,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         try {
-            Location lastKnownLocation = locationManager.getLastKnownLocation(locationProviderGPS);
+            //Location lastKnownLocation = locationManager.getLastKnownLocation(locationProviderGPS);
 
             if(gps_enabled)
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListenerGPS);
@@ -351,14 +371,14 @@ public class MainActivity extends AppCompatActivity {
             //locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, locListener);
             //locationManager.requestLocationUpdates( LocationManager.NETWORK_PROVIDER, 0, 0, locListener);
 
-            if (lastKnownLocation != null) {
+            /*if (lastKnownLocation != null) {
                 coordinates[0] = (Location.convert(lastKnownLocation.getLatitude(), FORMAT_DEGREES));
                 coordinates[1] = (Location.convert(lastKnownLocation.getLongitude(), FORMAT_DEGREES));
 
             } else {
                 coordinates[0] =("no location available");
                 coordinates[1] =("no location available");
-            }
+            }*/
 
 
         }
@@ -366,22 +386,6 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Elderly Assistant: ", "Error creating location service: " + ex.getMessage());
         }
 
-        // Define a listener that responds to location updates
-        /*LocationListener locationListener = new LocationListener() {
-            public void onLocationChanged(Location location) {
-                // Called when a new location is found by the network location provider.
-                //makeUseOfNewLocation(location);
-            }
-
-            public void onStatusChanged(String provider, int status, Bundle extras) {}
-
-            public void onProviderEnabled(String provider) {}
-
-            public void onProviderDisabled(String provider) {}
-        };*/
-
-        // Register the listener with the Location Manager to receive location updates
-        //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 
         return coordinates;
     }
