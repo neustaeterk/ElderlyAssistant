@@ -45,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_SELECT_PHONE_NUMBER = 1;
     private static final int FORMAT_DEGREES = 0;
+    private TextView coordinatesText, addressText;
+    private LocationManager locationManager;
+    private String locationProviderGPS;
+    private String locationProviderNetwork;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,14 +81,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View V) {
                 String [] coordinates = getGPSCoordinates();
-                TextView textView = (TextView) findViewById(R.id.textView);
-                TextView textView2 = (TextView) findViewById(R.id.textView2);
+                coordinatesText = (TextView) findViewById(R.id.textView);
+                addressText = (TextView) findViewById(R.id.textView2);
                 String coordinatesString = "" + coordinates[0] + ", " + coordinates[1];
-                textView.setText(coordinatesString);
+                coordinatesText.setText(coordinatesString);
+
+                String message = "https://maps.google.com/maps?q=" + coordinates[0] + "," + coordinates[1];
+                sendTextMessage(message);
+
                 String[] testcoordinates = {"45.4951488","-73.5763037"};
                 if (!coordinates[0].equals("no location available")){
                     String address = findAddress(testcoordinates);
-                    textView2.setText(address);
+                    addressText.setText(address);
                     Log.d("Address",address);
                 }
 
@@ -181,21 +189,108 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Code below about LocationListener refer to http://developer.android.com/guide/topics/location/strategies.html
+    // Define a listener that responds to location updates
+    LocationListener locListenerGPS = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            // Called when a new location is found by the network location provider.
+            displayLocation(location);
+            Log.d("location", location.toString());
+            String lat = Location.convert(location.getLatitude(), FORMAT_DEGREES);
+            String longitude = Location.convert(location.getLongitude(), FORMAT_DEGREES);
+            String message = lat + ", " + longitude;
+            sendTextMessage(message);
+            try
+            {
+                locationManager.removeUpdates(this);
+                locationManager.removeUpdates(locListenerNetwork);
+            }
+            catch (SecurityException se)
+            {
+
+            }
+        }
+
+        // "Your LocationListener must implement several callback methods that the Location Manager
+        // calls when the user location changes or when the status of the service changes."
+        // Left empty intentionally here
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+        public void onProviderEnabled(String provider) {
+        }
+        public void onProviderDisabled(String provider) {
+        }
+    };
+
+    // Code below about LocationListener refer to http://developer.android.com/guide/topics/location/strategies.html
+    // Define a listener that responds to location updates
+    LocationListener locListenerNetwork = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            // Called when a new location is found by the network location provider.
+            displayLocation(location);
+            Log.d("location", location.toString());
+            try
+            {
+                locationManager.removeUpdates(this);
+                locationManager.removeUpdates(locListenerGPS);
+            }
+            catch (SecurityException se)
+            {
+
+            }
+
+        }
+
+        // "Your LocationListener must implement several callback methods that the Location Manager
+        // calls when the user location changes or when the status of the service changes."
+        // Left empty intentionally here
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+        public void onProviderEnabled(String provider) {
+        }
+        public void onProviderDisabled(String provider) {
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Register the listener with the Location Manager to receive location updates
+        //locationManager.requestLocationUpdates(locationProvider, 0, 0, locListener);
+    }
+
+    /**
+     *
+     * @param loc - Location to be displayed
+     */
+    public void displayLocation(Location loc) {
+        if (loc != null) {
+            String lat = Location.convert(loc.getLatitude(), FORMAT_DEGREES);
+            String longitude = Location.convert(loc.getLongitude(), FORMAT_DEGREES);
+            coordinatesText.setText(lat + ", " + longitude);
+
+        } else {
+            String lat = "no location available";
+            String longitude = "no location available";
+            coordinatesText.setText(lat + ", " + longitude);
+        }
+    }
+
     private void sendTextMessage(String message)
     {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String contactNumber = sharedPreferences.getString("contact_number", "preference not found");
-        //SmsManager smsManager = SmsManager.getDefault();
-        //smsManager.sendTextMessage(contactNumber, null, "testing", null, null);
-        TextView textView = (TextView) findViewById(R.id.textView);
-        textView.setText(contactNumber);
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(contactNumber, null, message, null, null);
+        //TextView textView = (TextView) findViewById(R.id.textView);
+        //textView.setText(contactNumber);
     }
 
     private String[] getGPSCoordinates()
     {
         String [] coordinates = new String[2]; // [latitude, longitude]
         // Acquire a reference to the system Location Manager
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;
         boolean network_enabled = false;
         try {
@@ -231,11 +326,22 @@ public class MainActivity extends AppCompatActivity {
             });
             dialog.show();
         }
-        //String locationProvider = LocationManager.NETWORK_PROVIDER;
-        String locationProvider = LocationManager.GPS_PROVIDER;
+
+        locationProviderNetwork = LocationManager.NETWORK_PROVIDER;
+        locationProviderGPS = LocationManager.GPS_PROVIDER;
+
 
         try {
-            Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
+            Location lastKnownLocation = locationManager.getLastKnownLocation(locationProviderGPS);
+
+            if(gps_enabled)
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListenerGPS);
+            if(network_enabled)
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListenerNetwork);
+
+            //locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, locListener);
+            //locationManager.requestLocationUpdates( LocationManager.NETWORK_PROVIDER, 0, 0, locListener);
+
             if (lastKnownLocation != null) {
                 coordinates[0] = (Location.convert(lastKnownLocation.getLatitude(), FORMAT_DEGREES));
                 coordinates[1] = (Location.convert(lastKnownLocation.getLongitude(), FORMAT_DEGREES));
@@ -244,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
                 coordinates[0] =("no location available");
                 coordinates[1] =("no location available");
             }
-            ;
+
 
         }
         catch (SecurityException ex) {
