@@ -86,16 +86,18 @@ public class MainActivity extends AppCompatActivity {
                 String coordinatesString = "" + coordinates[0] + ", " + coordinates[1];
                 coordinatesText.setText(coordinatesString);
 
-                String message = "https://maps.google.com/maps?q=" + coordinates[0] + "," + coordinates[1];
-                sendTextMessage(message);
+                String message = "Emergency received from location:\n https://maps.google.com/maps?q=" + coordinates[0] + "," + coordinates[1];
+
 
                 String[] testcoordinates = {"45.4951488","-73.5763037"};
                 if (!coordinates[0].equals("no location available")){
                     String address = findAddress(testcoordinates);
                     addressText.setText(address);
                     Log.d("Address",address);
+                    message = message + "\n" + address;
                 }
 
+                sendTextMessage(message);
             }
         });
 
@@ -198,7 +200,14 @@ public class MainActivity extends AppCompatActivity {
             Log.d("location", location.toString());
             String lat = Location.convert(location.getLatitude(), FORMAT_DEGREES);
             String longitude = Location.convert(location.getLongitude(), FORMAT_DEGREES);
-            String message = lat + ", " + longitude;
+            String[] coordinates = {lat, longitude};
+            String address = findAddress(coordinates);
+            String message = "";
+            if (!address.equals("Address not found."))
+            {
+                message = address;
+            }
+            message = message + "\nEmergency received from location: https://maps.google.com/maps?q=" + lat + "," + longitude;
             sendTextMessage(message);
             try
             {
@@ -430,7 +439,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(!addressList.isEmpty()){
-            address = addressList.get(0).toString();
+            Address addressObject =addressList.get(0);
+            address = addressObject.getAddressLine(0) + ", " + addressObject.getAddressLine(1) + ", " + addressObject.getAddressLine(2);
         }
         else{
             address = "Address not found.";
