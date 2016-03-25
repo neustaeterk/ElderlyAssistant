@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -128,8 +129,7 @@ public class AddMedicationActivity extends AppCompatActivity {
                     String minute = "" + timePicker.getCurrentMinute(); //getMinute() for API 23
                     String time = hour + ":" + minute;
 
-                    //just for testing
-                    String daysOfWeek = "DMTWJFS";
+                    String daysOfWeek = getDaysOfWeek();
 
                     medicationReminders.setTime(time);
                     medicationReminders.setDaysOfWeek(daysOfWeek);
@@ -342,5 +342,42 @@ public class AddMedicationActivity extends AppCompatActivity {
         mBuilder.setVibrate(pattern);
 
         return mBuilder.build();
+    }
+
+    private String getDaysOfWeek()
+    {
+        CheckBox checkBoxSunday = (CheckBox) findViewById(R.id.checkBoxSunday);
+        CheckBox checkBoxMonday = (CheckBox) findViewById(R.id.checkBoxMonday);
+        CheckBox checkBoxTuesday = (CheckBox) findViewById(R.id.checkBoxTuesday);
+        CheckBox checkBoxWednesday = (CheckBox) findViewById(R.id.checkBoxWednesday);
+        CheckBox checkBoxThursday = (CheckBox) findViewById(R.id.checkBoxThursday);
+        CheckBox checkBoxFriday = (CheckBox) findViewById(R.id.checkBoxFriday);
+        CheckBox checkBoxSaturday = (CheckBox) findViewById(R.id.checkBoxSaturday);
+
+        String daysOfWeek = "";
+
+        if (checkBoxSunday.isChecked()){
+            daysOfWeek = daysOfWeek.concat("D");
+        }
+        if (checkBoxMonday.isChecked()){
+            daysOfWeek = daysOfWeek.concat("M");
+        }
+        if (checkBoxTuesday.isChecked()){
+            daysOfWeek = daysOfWeek.concat("T");
+        }
+        if (checkBoxWednesday.isChecked()){
+            daysOfWeek = daysOfWeek.concat("W");
+        }
+        if (checkBoxThursday.isChecked()){
+            daysOfWeek = daysOfWeek.concat("J");
+        }
+        if (checkBoxFriday.isChecked()){
+            daysOfWeek = daysOfWeek.concat("F");
+        }
+        if (checkBoxSaturday.isChecked()){
+            daysOfWeek = daysOfWeek.concat("S");
+        }
+
+        return daysOfWeek;
     }
 }
