@@ -16,17 +16,25 @@ import java.util.ArrayList;
 /**
  * Created by Kenton on 2016-03-18.
  */
-public class CustomArrayAdapter extends ArrayAdapter<String>{
+public class CustomArrayAdapter extends ArrayAdapter<MedicationReminders>{
     private final Context context;
-    private final ArrayList<String> values;
+    //private final ArrayList<String> values;
     //private final ArrayList<Integer> booleanValues;
     private final ArrayList<MedicationReminders> reminders;
     private DatabaseHelper db;
 
-    public CustomArrayAdapter(Context context, ArrayList<String> values, ArrayList<MedicationReminders> reminders) {
+    /*public CustomArrayAdapter(Context context, ArrayList<String> values, ArrayList<MedicationReminders> reminders) {
         super(context, -1, values);
         this.context = context;
         this.values = values;
+        this.reminders = reminders;
+        db = new DatabaseHelper(context);
+    }*/
+
+    public CustomArrayAdapter(Context context, ArrayList<MedicationReminders> reminders)
+    {
+        super(context, -1, reminders);
+        this.context = context;
         this.reminders = reminders;
         db = new DatabaseHelper(context);
     }
@@ -38,17 +46,17 @@ public class CustomArrayAdapter extends ArrayAdapter<String>{
         View rowView = inflater.inflate(R.layout.list_medications_2, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.list_medications_textview_2);
 
-        textView.setText(values.get(position));
+        textView.setText(reminders.get(position).getMedicationName());
         // change the colour depending on whether the user dismissed a notificaiton
         int dismissed = reminders.get(position).getDismissed();
 
         if (dismissed == 1)
         {
-            textView.setBackgroundColor(Color.GREEN);
+            textView.setBackgroundColor(Color.parseColor("#69F564"));
         }
         else
         {
-            textView.setBackgroundColor(Color.RED);
+            textView.setBackgroundColor(Color.parseColor("#FA414A"));
         }
 
         /*rowView.setOnClickListener(new View.OnClickListener() {
@@ -64,9 +72,9 @@ public class CustomArrayAdapter extends ArrayAdapter<String>{
         return rowView;
     }
 
-    public String getItem(int position){
+    public MedicationReminders getItem(int position){
 
-        return values.get(position);
+        return reminders.get(position);
     }
 
     public MedicationReminders getItemAtPosition(int position)
@@ -115,13 +123,13 @@ public class CustomArrayAdapter extends ArrayAdapter<String>{
                 intent.putExtra("medId", medId);
                 context.startActivity(intent);
                 //refresh view
-                reminders.clear();
+                /*reminders.clear();
                 reminders.addAll(db.getAllReminders());
                 values.clear();
 
                 for (int i = 0; i < reminders.size();i++){
                     values.add(reminders.get(i).getMedicationName());
-                }
+                }*/
 
 
             }

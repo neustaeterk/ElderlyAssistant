@@ -27,8 +27,10 @@ import java.util.List;
 public class MedicationsListFragment extends Fragment {
 
     DatabaseHelper mDb;
-    List<MedicationReminders> mMedList;
+    //List<MedicationReminders> mMedList;
     ArrayAdapter<String> mMedListAdapter;
+    ArrayList<MedicationReminders> reminders;
+    CustomArrayAdapter mMedListAdapter2;
 
     public MedicationsListFragment() {
     }
@@ -38,20 +40,23 @@ public class MedicationsListFragment extends Fragment {
                              Bundle savedInstanceState) {
         mDb = new DatabaseHelper(getActivity());
 
-        mMedList = new ArrayList<MedicationReminders>();
+        //mMedList = new ArrayList<MedicationReminders>();
 
-        mMedList = mDb.getAllReminders();
+        //mMedList = mDb.getAllReminders();
 
-        ArrayList<String> medicationsNames = new ArrayList<String>();
-        ArrayList<Integer> medicationDismiss = new ArrayList<Integer>();
-        final ArrayList<MedicationReminders> reminders = new ArrayList<MedicationReminders>();
+        reminders = new ArrayList<MedicationReminders>();
+        reminders.addAll(mDb.getAllReminders());
 
-        for (int i = 0; i < mMedList.size();i++){
+        final ArrayList<String> medicationsNames = new ArrayList<String>();
+        final ArrayList<Integer> medicationDismiss = new ArrayList<Integer>();
+        //final ArrayList<MedicationReminders> reminders = new ArrayList<MedicationReminders>();
+
+        /*for (int i = 0; i < mMedList.size();i++){
             medicationsNames.add(mMedList.get(i).getMedicationName());
             //Log.d("XXXXXXX", medicationsNames.get(i));
             medicationDismiss.add(mMedList.get(i).getDismissed());
             reminders.add(mMedList.get(i));
-        }
+        }*/
 
         View rootView = inflater.inflate(R.layout.fragment_medications_list, container, false);
 
@@ -62,9 +67,9 @@ public class MedicationsListFragment extends Fragment {
 
         //listView.setAdapter(mMedListAdapter);
 
-        final CustomArrayAdapter mMedListAdapter2 = new CustomArrayAdapter(getActivity(), medicationsNames, reminders);
+        //final CustomArrayAdapter mMedListAdapter2 = new CustomArrayAdapter(getActivity(), medicationsNames, reminders);
+        final CustomArrayAdapter mMedListAdapter2 = new CustomArrayAdapter(getActivity(), reminders);
         listView.setAdapter(mMedListAdapter2);
-
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -76,7 +81,13 @@ public class MedicationsListFragment extends Fragment {
                 dialog.show();
                 reminders.clear();
                 reminders.addAll(mDb.getAllReminders());
+                /*
+                medicationsNames.clear();
+                for (int i = 0; i < reminders.size();i++) {
+                    medicationsNames.add(reminders.get(i).getMedicationName());
+                }*/
                 mMedListAdapter2.notifyDataSetChanged();
+                //mMedListAdapter2 = new CustomArrayAdapter(getActivity(), medicationsNames, reminders);
             }
         });
 
@@ -84,39 +95,24 @@ public class MedicationsListFragment extends Fragment {
 
         //mMedListAdapter2.notifyDataSetChanged();
 
-
-        //View view = getViewByPosition(0, listView);
-        //view.setBackgroundColor(Color.parseColor("red"));
-
-        /*
-        int count = mMedListAdapter.getCount();
-        Log.d("List ", "Number of items: " + count);
-        int firstPos = listView.getFirstVisiblePosition();
-        Log.d("ListView ", "First visible position: " + firstPos);
-        int listCount = listView.getChildCount();
-        Log.d("ListView ", "Number of items: " + listCount);
-        int lastPos = listView.getLastVisiblePosition();
-        Log.d("ListView ", "Last visible position: " + lastPos);
-        View view = mMedListAdapter.getView(firstPos, null, listView);
-        view.setBackgroundColor(Color.GREEN);
-        */
-
-        //View view2 = listView.getChildAt(firstPos);
-        //View view3 = listView.getAdapter().getView(0, view2, listView);
-        //view3.setBackgroundColor(Color.GREEN);
-
-        //TextView tv = (TextView)view2.findViewById(R.id.list_medications_textview);
-        //tv.setText("some new text");
-
-        //mMedListAdapter.notifyDataSetChanged();
-
-        //int pos = 0;
-        //View view = mMedListAdapter.getView(pos, (TextView)rootView.findViewById(R.id.list_medications_textview), listView);
-        //view.setBackgroundColor(Color.parseColor("red"));
-
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        //reminders.clear();
+        //reminders.addAll(mDb.getAllReminders());
+        //mMedListAdapter2.notifyDataSetChanged();
+
+    }
+
+    /**
+     * This function is not used
+     * @param pos
+     * @param listView
+     * @return
+     */
     public View getViewByPosition(int pos, ListView listView) {
         final int firstListItemPosition = listView.getFirstVisiblePosition();
         final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
