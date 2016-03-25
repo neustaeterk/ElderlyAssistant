@@ -233,6 +233,11 @@ public class AddMedicationActivity extends AppCompatActivity {
         return bitmap;
     }
 
+    /**
+     * This method is for testing only
+     * @param photo
+     * @param medName
+     */
     private void sendNotification(Bitmap photo, String medName)
     {
         int mId = 1;

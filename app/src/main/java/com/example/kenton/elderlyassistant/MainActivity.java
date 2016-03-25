@@ -58,29 +58,11 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Button sendMessageButton = (Button) findViewById(R.id.sendMessageButton) ;
-        sendMessageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View V) {
-                //Intent intent = new Intent(MainActivity.this, CrazyFactsActivity.class) ;
-                //startActivity(intent);
-                sendTextMessage("");
-            }
-        });
-
-        Button findContactButton = (Button) findViewById(R.id.findContactButton) ;
-        findContactButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View V) {
-                selectContact();
-            }
-        });
-
         Button getGPSButton = (Button) findViewById(R.id.getGPSButton) ;
         getGPSButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
-                String [] coordinates = getGPSCoordinates();
+                String[] coordinates = getGPSCoordinates();
                 coordinatesText = (TextView) findViewById(R.id.textView);
                 addressText = (TextView) findViewById(R.id.textView2);
                 //String coordinatesString = "" + coordinates[0] + ", " + coordinates[1];
@@ -89,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 //String message = "Emergency received from location:\n https://maps.google.com/maps?q=" + coordinates[0] + "," + coordinates[1];
 
 
-                String[] testcoordinates = {"45.4951488","-73.5763037"};
+                String[] testcoordinates = {"45.4951488", "-73.5763037"};
                 /*if (!coordinates[0].equals("no location available")){
                     String address = findAddress(testcoordinates);
                     addressText.setText(address);
@@ -99,8 +81,24 @@ public class MainActivity extends AppCompatActivity {
                     }
                     sendTextMessage(message);
                 }*/
+            }
+        });
 
+        Button medReminderButton = (Button) findViewById(R.id.medicationReminderButton) ;
+        medReminderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View V) {
+                Intent intent = new Intent(MainActivity.this, ScheduleActivity.class) ;
+                startActivity(intent);
+            }
+        });
 
+        Button medicalRecordOrganizerButton = (Button) findViewById(R.id.medicalRecordOrganizerButton) ;
+        medicalRecordOrganizerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View V) {
+                //Intent intent = new Intent(MainActivity.this, CrazyFactsActivity.class) ;
+                //startActivity(intent);
             }
         });
 
@@ -120,12 +118,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button medReminderButton = (Button) findViewById(R.id.medicationReminderButton) ;
-        medReminderButton.setOnClickListener(new View.OnClickListener() {
+        Button findContactButton = (Button) findViewById(R.id.findContactButton) ;
+        findContactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
-                Intent intent = new Intent(MainActivity.this, ScheduleActivity.class) ;
-                startActivity(intent);
+                selectContact();
             }
         });
 
@@ -142,6 +139,11 @@ public class MainActivity extends AppCompatActivity {
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.MATCH_PARENT);
                 input.setLayoutParams(lp);
+
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                String currentAddress = sharedPreferences.getString("home_address", "preference not found");
+                input.setText(currentAddress);
+
                 alertDialog.setView(input);
 
                 alertDialog.setPositiveButton("OK",
