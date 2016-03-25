@@ -172,15 +172,15 @@ public class AddMedicationActivity extends AppCompatActivity {
     private Bitmap scaleImage(String mCurrentPhotoPath)
     {
         Bitmap bitmap;
-        ImageView mImageView = (ImageView) findViewById(R.id.imageView);
+        //ImageView mImageView = (ImageView) findViewById(R.id.imageView);
         // Get the dimensions of the View
-        int targetW = mImageView.getWidth();
-        int targetH = mImageView.getHeight();
+        //int targetW = mImageView.getWidth();
+        //int targetH = mImageView.getHeight();
         //MedicationReminders medicationReminders = db.getMedicationReminder(1);
         //String mCurrentPhotoPath = medicationReminders.getPhotoDirectory();
         //String medName = medicationReminders.getMedicationName();
         Log.d("Path", "" + mCurrentPhotoPath);
-        Log.d("TargetDims ", "" + targetW + ", " + targetH);
+        //Log.d("TargetDims ", "" + targetW + ", " + targetH);
 
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -228,7 +228,7 @@ public class AddMedicationActivity extends AppCompatActivity {
         {
             bitmap = null;
         }
-        mImageView.setImageBitmap(bitmap);
+        //mImageView.setImageBitmap(bitmap);
 
         return bitmap;
     }
