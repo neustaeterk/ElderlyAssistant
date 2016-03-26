@@ -34,6 +34,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -123,7 +124,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View V) {
                 selectContact();
+
             }
+
+
         });
 
         Button setAddressButton = (Button) findViewById(R.id.setAddressButton) ;
@@ -216,7 +220,6 @@ public class MainActivity extends AppCompatActivity {
 
             try
             {
-                locationManager.removeUpdates(this);
                 locationManager.removeUpdates(locListenerNetwork);
                 message = message + "\nEmergency received from location: https://maps.google.com/maps?q=" + lat + "," + longitude;
                 sendTextMessage(message);
@@ -226,7 +229,15 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
+            Context context = getApplicationContext();
+            CharSequence text = "Successfully sent your location coordinates.";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+
         }
+
+
 
         // "Your LocationListener must implement several callback methods that the Location Manager
         // calls when the user location changes or when the status of the service changes."
@@ -238,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
         public void onProviderDisabled(String provider) {
         }
     };
+
 
     // Code below about LocationListener refer to http://developer.android.com/guide/topics/location/strategies.html
     // Define a listener that responds to location updates
@@ -260,8 +272,7 @@ public class MainActivity extends AppCompatActivity {
 
             try
             {
-                locationManager.removeUpdates(this);
-                locationManager.removeUpdates(locListenerNetwork);
+                locationManager.removeUpdates(locListenerGPS);
                 message = message + "\nNetwork\nEmergency received from location: https://maps.google.com/maps?q=" + lat + "," + longitude;
                 sendTextMessage(message);
             }
@@ -269,6 +280,12 @@ public class MainActivity extends AppCompatActivity {
             {
 
             }
+
+            Context context = getApplicationContext();
+            CharSequence text = "Successfully sent your location coordinates.";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
 
         }
 
@@ -281,6 +298,8 @@ public class MainActivity extends AppCompatActivity {
         }
         public void onProviderDisabled(String provider) {
         }
+
+
     };
 
     @Override
@@ -366,9 +385,11 @@ public class MainActivity extends AppCompatActivity {
             //Location lastKnownLocation = locationManager.getLastKnownLocation(locationProviderGPS);
 
             if(gps_enabled)
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListenerGPS);
+                //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListenerGPS);
+                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER,locListenerGPS,null);
             if(network_enabled)
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListenerNetwork);
+                //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListenerNetwork);
+                locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER,locListenerNetwork,null);
 
             //locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, locListener);
             //locationManager.requestLocationUpdates( LocationManager.NETWORK_PROVIDER, 0, 0, locListener);

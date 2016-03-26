@@ -153,6 +153,12 @@ public class MedicationsListFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int id) {
                         // User clicked yes
                         db.deleteReminder(reminder);
+
+                        Context context = getContext();
+                        CharSequence text = "This medication has been deleted.";
+                        int duration = Toast.LENGTH_SHORT;
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
                     }
                 });
                 builderDelete.show();
