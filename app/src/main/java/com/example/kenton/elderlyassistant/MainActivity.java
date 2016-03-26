@@ -45,6 +45,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_SELECT_PHONE_NUMBER = 1;
+    static final int REQUEST_GPS = 2;
     private static final int FORMAT_DEGREES = 0;
     private TextView coordinatesText, addressText;
     private LocationManager locationManager;
@@ -383,6 +384,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(contactNumber.equals(defaultNumber)){
             selectContact(true);
+            return coordinates;
         }
 
         locationProviderNetwork = LocationManager.NETWORK_PROVIDER;
@@ -423,16 +425,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void selectContact(boolean getGPS) {
         Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.putExtra("GPS", getGPS);
         intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
         if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(intent, REQUEST_SELECT_PHONE_NUMBER);
+            if (getGPS){
+                startActivityForResult(intent, REQUEST_GPS);
+            }
+            else {
+                startActivityForResult(intent, REQUEST_SELECT_PHONE_NUMBER);
+            }
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SELECT_PHONE_NUMBER && resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             // Get the URI and query the content provider for the phone number
             Uri contactUri = data.getData();
             String[] projection = new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER};
@@ -456,8 +462,8 @@ public class MainActivity extends AppCompatActivity {
                 editor.commit();
             }
 
-            if (data.getBooleanExtra("GPS", false)){
-                String[] coordinates = getGPSCoordinates();
+            if (requestCode == REQUEST_GPS){
+               String[] coordinates = getGPSCoordinates();
             }
         }
     }
