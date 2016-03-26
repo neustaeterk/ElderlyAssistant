@@ -37,14 +37,22 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Get GPS coordinates" />
+            android:text="Emergency: Send Your Location"
+            android:textColor="#FFFFFF"
+            android:background="#8B0000"
+            android:textStyle="bold"
+            android:textSize="25dp" />
 
         <Button
             android:id="@+id/medicationReminderButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Medication Reminders" />
+            android:text="Medication Reminders"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:background="#004466"
+            android:textSize="25dp"/>
 
     </LinearLayout>
 
@@ -61,14 +69,22 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Medical Record Organizer" />
+            android:text="Medical Record Organizer"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:background="#25744d"
+            android:textSize="25dp"/>
 
         <Button
             android:id="@+id/goHomeButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Directions Home" />
+            android:text="Directions Home"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:background="#e68a00"
+            android:textSize="25dp"/>
 
     </LinearLayout>
 
@@ -84,14 +100,22 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Select a contact Person" />
+            android:text="Select a contact Person"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:background="#73264d"
+            android:textSize="25dp"/>
 
         <Button
             android:id="@+id/setAddressButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Set your home address" />
+            android:text="Set your home address"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:background="#1f7a7a"
+            android:textSize="25dp"/>
 
     </LinearLayout>
 
