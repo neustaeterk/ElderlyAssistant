@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.kenton.elderlyassistant.AddMedicationActivity"
+    tools:showIn="@layout/activity_add_medication"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.kenton.elderlyassistant.AddMedicationActivity"
-    tools:showIn="@layout/activity_add_medication">
+    android:paddingTop="@dimen/activity_vertical_margin">
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Type the name of the medication:"
         android:id="@+id/textTitle"
-        android:singleLine="true"
         android:imeOptions="actionDone"/>
 
     <EditText
@@ -27,7 +29,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignEnd="@+id/timePicker"
         android:layout_below="@+id/textTitle"
-        android:singleLine="false" />
+        android:singleLine="true" />
 
     <TimePicker
         android:layout_width="fill_parent"
@@ -36,19 +38,26 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/medicationName" />
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose the days of the week that the medication should be taken:"
+        android:id="@+id/textDaysOfWeekTitle"
+        android:layout_below="@+id/timePicker" />
+
     <LinearLayout
         android:id="@+id/days_of_week"
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:layout_weight="1"
         android:orientation="horizontal"
-        android:layout_below="@+id/timePicker"
+        android:layout_below="@+id/textDaysOfWeekTitle"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
         <CheckBox
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="Sun"
+            android:text="S"
             android:id="@+id/checkBoxSunday"
             android:layout_weight="1"
             android:checked="true" />
@@ -56,7 +65,7 @@
         <CheckBox
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="Mon"
+            android:text="M"
             android:id="@+id/checkBoxMonday"
             android:layout_weight="1"
             android:checked="true"/>
@@ -64,7 +73,7 @@
         <CheckBox
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="Tue"
+            android:text="T"
             android:id="@+id/checkBoxTuesday"
             android:layout_weight="1"
             android:checked="true"/>
@@ -72,7 +81,7 @@
         <CheckBox
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="Wed"
+            android:text="W"
             android:id="@+id/checkBoxWednesday"
             android:layout_weight="1"
             android:checked="true"/>
@@ -80,7 +89,7 @@
         <CheckBox
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="Thu"
+            android:text="T"
             android:id="@+id/checkBoxThursday"
             android:layout_weight="1"
             android:checked="true"/>
@@ -88,7 +97,7 @@
         <CheckBox
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="Fri"
+            android:text="F"
             android:id="@+id/checkBoxFriday"
             android:layout_weight="1"
             android:checked="true"/>
@@ -96,7 +105,7 @@
         <CheckBox
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="Sat"
+            android:text="S"
             android:id="@+id/checkBoxSaturday"
             android:layout_weight="1"
             android:checked="true"/>
@@ -119,10 +128,5 @@
         android:layout_below="@+id/takePhotoButton"
         android:layout_alignParentStart="true" />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="128dp"
-        android:id="@+id/imageView"
-        android:layout_below="@+id/addMedicationButton" />
-
 </RelativeLayout>
+</ScrollView>

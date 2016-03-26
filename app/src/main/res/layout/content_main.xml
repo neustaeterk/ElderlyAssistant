@@ -33,18 +33,18 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/sendMessageButton"
+            android:id="@+id/getGPSButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Send Message" />
+            android:text="Get GPS coordinates" />
 
         <Button
-            android:id="@+id/findContactButton"
+            android:id="@+id/medicationReminderButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Select a contact Person" />
+            android:text="Medication Reminders" />
 
     </LinearLayout>
 
@@ -57,11 +57,11 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/getGPSButton"
+            android:id="@+id/medicalRecordOrganizerButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Get GPS coordinates" />
+            android:text="Medical Record Organizer" />
 
         <Button
             android:id="@+id/goHomeButton"
@@ -80,11 +80,11 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/medicationReminderButton"
+            android:id="@+id/findContactButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Medication Reminders" />
+            android:text="Select a contact Person" />
 
         <Button
             android:id="@+id/setAddressButton"
