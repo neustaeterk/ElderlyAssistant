@@ -123,8 +123,7 @@ public class MainActivity extends AppCompatActivity {
         findContactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
-                selectContact();
-
+                selectContact(false);
             }
 
 
@@ -375,6 +374,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             dialog.show();
+
+        }
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String contactNumber = sharedPreferences.getString("contact_number", "preference not found");
+        String defaultNumber = getString(R.string.pref_default_contact_number);
+
+        if(contactNumber.equals(defaultNumber)){
+            selectContact(true);
         }
 
         locationProviderNetwork = LocationManager.NETWORK_PROVIDER;
@@ -413,8 +421,9 @@ public class MainActivity extends AppCompatActivity {
         return coordinates;
     }
 
-    public void selectContact() {
+    public void selectContact(boolean getGPS) {
         Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.putExtra("GPS", getGPS);
         intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(intent, REQUEST_SELECT_PHONE_NUMBER);
@@ -445,6 +454,10 @@ public class MainActivity extends AppCompatActivity {
 
                 // Commit the edits!
                 editor.commit();
+            }
+
+            if (data.getBooleanExtra("GPS", false)){
+                String[] coordinates = getGPSCoordinates();
             }
         }
     }
