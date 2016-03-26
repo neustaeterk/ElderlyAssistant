@@ -378,8 +378,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String contactNumber = sharedPreferences.getString("contact_number", "preference not found");
         String defaultNumber = getString(R.string.pref_default_contact_number);
+        String contactNumber = sharedPreferences.getString("contact_number", defaultNumber);
 
         if(contactNumber.equals(defaultNumber)){
             selectContact(true);
