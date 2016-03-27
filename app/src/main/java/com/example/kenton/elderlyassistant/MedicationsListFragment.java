@@ -79,8 +79,8 @@ public class MedicationsListFragment extends Fragment {
                 //MedicationReminders reminder = (MedicationReminders) o;
                 AlertDialog dialog = createDialog(view, position, mDb, reminder);
                 dialog.show();
-                reminders.clear();
-                reminders.addAll(mDb.getAllReminders());
+                //reminders.clear();
+                //reminders.addAll(mDb.getAllReminders());
                 /*
                 medicationsNames.clear();
                 for (int i = 0; i < reminders.size();i++) {
@@ -95,6 +95,36 @@ public class MedicationsListFragment extends Fragment {
 
         //mMedListAdapter2.notifyDataSetChanged();
 
+
+        //View view = getViewByPosition(0, listView);
+        //view.setBackgroundColor(Color.parseColor("red"));
+
+        /*
+        int count = mMedListAdapter.getCount();
+        Log.d("List ", "Number of items: " + count);
+        int firstPos = listView.getFirstVisiblePosition();
+        Log.d("ListView ", "First visible position: " + firstPos);
+        int listCount = listView.getChildCount();
+        Log.d("ListView ", "Number of items: " + listCount);
+        int lastPos = listView.getLastVisiblePosition();
+        Log.d("ListView ", "Last visible position: " + lastPos);
+        View view = mMedListAdapter.getView(firstPos, null, listView);
+        view.setBackgroundColor(Color.GREEN);
+        */
+
+        //View view2 = listView.getChildAt(firstPos);
+        //View view3 = listView.getAdapter().getView(0, view2, listView);
+        //view3.setBackgroundColor(Color.GREEN);
+
+        //TextView tv = (TextView)view2.findViewById(R.id.list_medications_textview);
+        //tv.setText("some new text");
+
+        //mMedListAdapter.notifyDataSetChanged();
+
+        //int pos = 0;
+        //View view = mMedListAdapter.getView(pos, (TextView)rootView.findViewById(R.id.list_medications_textview), listView);
+        //view.setBackgroundColor(Color.parseColor("red"));
+
         return rootView;
     }
 
@@ -107,12 +137,6 @@ public class MedicationsListFragment extends Fragment {
 
     }
 
-    /**
-     * This function is not used
-     * @param pos
-     * @param listView
-     * @return
-     */
     public View getViewByPosition(int pos, ListView listView) {
         final int firstListItemPosition = listView.getFirstVisiblePosition();
         final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
@@ -153,12 +177,6 @@ public class MedicationsListFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int id) {
                         // User clicked yes
                         db.deleteReminder(reminder);
-
-                        Context context = getContext();
-                        CharSequence text = "This medication has been deleted.";
-                        int duration = Toast.LENGTH_SHORT;
-                        Toast toast = Toast.makeText(context, text, duration);
-                        toast.show();
                     }
                 });
                 builderDelete.show();

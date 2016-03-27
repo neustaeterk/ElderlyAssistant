@@ -7,6 +7,8 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -14,6 +16,8 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
@@ -37,6 +41,7 @@ import java.util.Calendar;
 
 public class AddMedicationActivity extends AppCompatActivity {
 
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     String photoName;
     String photoDir;
     long ID;
@@ -74,12 +79,6 @@ public class AddMedicationActivity extends AppCompatActivity {
                 medicationReminders.setId(ID);
                 //update boolean so that the add button updates the entry already added
                 photoTaken = true;
-
-                Context context = getApplicationContext();
-                CharSequence text = "Picture Saved";
-                int duration = Toast.LENGTH_SHORT;
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
             }
         });
 
@@ -384,5 +383,16 @@ public class AddMedicationActivity extends AppCompatActivity {
         }
 
         return daysOfWeek;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Context context = getApplicationContext();
+            CharSequence text = "Picture Saved";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
     }
 }
