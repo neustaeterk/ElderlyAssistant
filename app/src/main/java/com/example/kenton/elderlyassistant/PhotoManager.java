@@ -40,31 +40,6 @@ public class PhotoManager {
         return imageFileDirectory;
     }
 
-    public void takePicture(String directory)
-    {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(activity.getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile(directory);
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-                Log.d("Error: ", "Could not create Image File");
-            }
-
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(photoFile));
-                activity.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                //make the photo available to see in the user's gallery
-                //galleryAddPic();
-            }
-        }
-    }
-
     private File createImageFile(String directory) throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -93,6 +68,31 @@ public class PhotoManager {
         mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         imageFileDirectory = image.getAbsolutePath();
         return image;
+    }
+
+    public void takePicture(String directory)
+    {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(activity.getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile(directory);
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                Log.d("Error: ", "Could not create Image File");
+            }
+
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(photoFile));
+                activity.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                //make the photo available to see in the user's gallery
+                //galleryAddPic();
+            }
+        }
     }
 
     private void galleryAddPic() {

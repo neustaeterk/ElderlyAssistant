@@ -165,7 +165,102 @@ public class AddMedicationActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Context context = getApplicationContext();
+            CharSequence text = "Picture Saved";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+    }
+
+    private String getDaysOfWeek()
+    {
+        CheckBox checkBoxSunday = (CheckBox) findViewById(R.id.checkBoxSunday);
+        CheckBox checkBoxMonday = (CheckBox) findViewById(R.id.checkBoxMonday);
+        CheckBox checkBoxTuesday = (CheckBox) findViewById(R.id.checkBoxTuesday);
+        CheckBox checkBoxWednesday = (CheckBox) findViewById(R.id.checkBoxWednesday);
+        CheckBox checkBoxThursday = (CheckBox) findViewById(R.id.checkBoxThursday);
+        CheckBox checkBoxFriday = (CheckBox) findViewById(R.id.checkBoxFriday);
+        CheckBox checkBoxSaturday = (CheckBox) findViewById(R.id.checkBoxSaturday);
+
+        String daysOfWeek = "";
+
+        if (checkBoxSunday.isChecked()){
+            daysOfWeek = daysOfWeek.concat("D");
+        }
+        if (checkBoxMonday.isChecked()){
+            daysOfWeek = daysOfWeek.concat("M");
+        }
+        if (checkBoxTuesday.isChecked()){
+            daysOfWeek = daysOfWeek.concat("T");
+        }
+        if (checkBoxWednesday.isChecked()){
+            daysOfWeek = daysOfWeek.concat("W");
+        }
+        if (checkBoxThursday.isChecked()){
+            daysOfWeek = daysOfWeek.concat("J");
+        }
+        if (checkBoxFriday.isChecked()){
+            daysOfWeek = daysOfWeek.concat("F");
+        }
+        if (checkBoxSaturday.isChecked()){
+            daysOfWeek = daysOfWeek.concat("S");
+        }
+
+        return daysOfWeek;
+    }
+
+    private Notification getNotification(String medName, String photoDir, int id) {
+
+        Bitmap medPhoto = scaleImage(photoDir);
+        //Intent dismissIntent = new Intent(this, )
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                        .setAutoCancel(true)
+                        .setContentTitle("Scheduled Medication")
+                        .setContentText("Time to take " + medName);
+
+        if (medPhoto != null)
+        {
+            NotificationCompat.BigPictureStyle bigPicStyle = new NotificationCompat.BigPictureStyle();
+            bigPicStyle.bigPicture(medPhoto);
+            bigPicStyle.setBigContentTitle("Time to take " + medName);
+            mBuilder.setStyle(bigPicStyle);
+        }
+
+        // Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(this, ScheduleActivity.class);
+        resultIntent.putExtra("medId", id);
+
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(ScheduleActivity.class);
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.addAction(R.drawable.ic_info_black_24dp, "Dismiss Alarm", resultPendingIntent);
+        mBuilder.setContentIntent(resultPendingIntent);
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        mBuilder.setSound(alarmSound);
+        mBuilder.setLights(Color.GREEN, 500, 500);
+        long[] pattern = {500,500,500,500,500,500,500,500,500};
+        mBuilder.setVibrate(pattern);
+
+        return mBuilder.build();
     }
 
     private Bitmap scaleImage(String mCurrentPhotoPath)
@@ -232,6 +327,30 @@ public class AddMedicationActivity extends AppCompatActivity {
         return bitmap;
     }
 
+    private void scheduleNotification(Notification notification, int hour, int minute, long Id) {
+        Log.d("ID ", "In scheduleNotification: " + Id);
+        // Set the alarm to start at approximately 2:00 p.m.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+
+        // With setInexactRepeating(), you have to use one of the AlarmManager interval
+        // constants--in this case, AlarmManager.INTERVAL_DAY.
+        Intent notificationIntent = new Intent(this, NotificationPublisher.class);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, (int) Id);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int) Id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        //PendingIntent.
+        long futureInMillis = SystemClock.elapsedRealtime() + 5000;
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+        //alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent );
+        //alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+        //        AlarmManager.INTERVAL_DAY, pendingIntent);
+        //alarmManager.cancel(pendingIntent);
+    }
+
     /**
      * This method is for testing only
      * @param photo
@@ -276,123 +395,4 @@ public class AddMedicationActivity extends AppCompatActivity {
         mNotificationManager.notify(mId, mBuilder.build());
     }
 
-    private void scheduleNotification(Notification notification, int hour, int minute, long Id) {
-        Log.d("ID ", "In scheduleNotification: " + Id);
-        // Set the alarm to start at approximately 2:00 p.m.
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, minute);
-
-        // With setInexactRepeating(), you have to use one of the AlarmManager interval
-        // constants--in this case, AlarmManager.INTERVAL_DAY.
-        Intent notificationIntent = new Intent(this, NotificationPublisher.class);
-        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, (int) Id);
-        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int) Id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        //PendingIntent.
-        long futureInMillis = SystemClock.elapsedRealtime() + 5000;
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
-        //alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent );
-        //alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-        //        AlarmManager.INTERVAL_DAY, pendingIntent);
-        //alarmManager.cancel(pendingIntent);
-    }
-
-    private Notification getNotification(String medName, String photoDir, int id) {
-
-        Bitmap medPhoto = scaleImage(photoDir);
-        //Intent dismissIntent = new Intent(this, )
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-                        .setAutoCancel(true)
-                        .setContentTitle("Scheduled Medication")
-                        .setContentText("Time to take " + medName);
-
-        if (medPhoto != null)
-        {
-            NotificationCompat.BigPictureStyle bigPicStyle = new NotificationCompat.BigPictureStyle();
-            bigPicStyle.bigPicture(medPhoto);
-            bigPicStyle.setBigContentTitle("Time to take " + medName);
-            mBuilder.setStyle(bigPicStyle);
-        }
-
-        // Creates an explicit intent for an Activity in your app
-        Intent resultIntent = new Intent(this, ScheduleActivity.class);
-        resultIntent.putExtra("medId", id);
-
-        // The stack builder object will contain an artificial back stack for the
-        // started Activity.
-        // This ensures that navigating backward from the Activity leads out of
-        // your application to the Home screen.
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        // Adds the back stack for the Intent (but not the Intent itself)
-        stackBuilder.addParentStack(ScheduleActivity.class);
-        // Adds the Intent that starts the Activity to the top of the stack
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        mBuilder.addAction(R.drawable.ic_info_black_24dp, "Dismiss Alarm", resultPendingIntent);
-        mBuilder.setContentIntent(resultPendingIntent);
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        mBuilder.setSound(alarmSound);
-        mBuilder.setLights(Color.GREEN, 500, 500);
-        long[] pattern = {500,500,500,500,500,500,500,500,500};
-        mBuilder.setVibrate(pattern);
-
-        return mBuilder.build();
-    }
-
-    private String getDaysOfWeek()
-    {
-        CheckBox checkBoxSunday = (CheckBox) findViewById(R.id.checkBoxSunday);
-        CheckBox checkBoxMonday = (CheckBox) findViewById(R.id.checkBoxMonday);
-        CheckBox checkBoxTuesday = (CheckBox) findViewById(R.id.checkBoxTuesday);
-        CheckBox checkBoxWednesday = (CheckBox) findViewById(R.id.checkBoxWednesday);
-        CheckBox checkBoxThursday = (CheckBox) findViewById(R.id.checkBoxThursday);
-        CheckBox checkBoxFriday = (CheckBox) findViewById(R.id.checkBoxFriday);
-        CheckBox checkBoxSaturday = (CheckBox) findViewById(R.id.checkBoxSaturday);
-
-        String daysOfWeek = "";
-
-        if (checkBoxSunday.isChecked()){
-            daysOfWeek = daysOfWeek.concat("D");
-        }
-        if (checkBoxMonday.isChecked()){
-            daysOfWeek = daysOfWeek.concat("M");
-        }
-        if (checkBoxTuesday.isChecked()){
-            daysOfWeek = daysOfWeek.concat("T");
-        }
-        if (checkBoxWednesday.isChecked()){
-            daysOfWeek = daysOfWeek.concat("W");
-        }
-        if (checkBoxThursday.isChecked()){
-            daysOfWeek = daysOfWeek.concat("J");
-        }
-        if (checkBoxFriday.isChecked()){
-            daysOfWeek = daysOfWeek.concat("F");
-        }
-        if (checkBoxSaturday.isChecked()){
-            daysOfWeek = daysOfWeek.concat("S");
-        }
-
-        return daysOfWeek;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Context context = getApplicationContext();
-            CharSequence text = "Picture Saved";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-        }
-    }
 }
