@@ -1,5 +1,6 @@
 package com.example.kenton.elderlyassistant;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -40,6 +41,7 @@ import java.io.File;
 import java.io.IOException;
 import java.security.Security;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     static final int REQUEST_SELECT_PHONE_NUMBER = 1;
     static final int REQUEST_GPS = 2;
     private static final int FORMAT_DEGREES = 0;
+    private static final int RESET_DISMISSED_ID = -2;
     private TextView coordinatesText, addressText;
     private LocationManager locationManager;
     private String locationProviderGPS;
@@ -58,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //scheduleResetMedicationDismissed();
 
         Button getGPSButton = (Button) findViewById(R.id.getGPSButton) ;
         getGPSButton.setOnClickListener(new View.OnClickListener() {
@@ -98,8 +103,8 @@ public class MainActivity extends AppCompatActivity {
         medicalRecordOrganizerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
-                //Intent intent = new Intent(MainActivity.this, CrazyFactsActivity.class) ;
-                //startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, OrganizerActivity.class) ;
+                startActivity(intent);
             }
         });
 
@@ -484,5 +489,19 @@ public class MainActivity extends AppCompatActivity {
         smsManager.sendTextMessage(contactNumber, null, message, null, null);
         //TextView textView = (TextView) findViewById(R.id.textView);
         //textView.setText(contactNumber);
+    }
+
+    private void scheduleResetMedicationDismissed()
+    {
+        Calendar calendar = Calendar.getInstance();
+        //calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 17);
+        calendar.set(Calendar.MINUTE, 27);
+
+        Intent intent = new Intent(this, ResetMedicationsDismissed.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, RESET_DISMISSED_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 }

@@ -4,8 +4,13 @@
     <string name="title_activity_settings">Settings</string>
 
 
-    <!-- Other Strings -->
-    <string name="medication_photos_directory">/ElderlyAssistant/Medication_Photos</string>
+    <!-- Strings for Add Medications-->
+    <string name="medication_photos_directory">Medication_Photos</string>
+
+    <!-- Strings for Organizer -->
+    <string name="photos_directory_test_results">Test_Results</string>
+    <string name="photos_directory_appointment_summaries">Appointment_Summaries</string>
+    <string name="photos_directory_miscellaneous">General_Medical_Records</string>
 
     <!-- Strings related to Settings -->
 
@@ -71,4 +76,5 @@
     <string name="title_activity_add_medication">AddMedicationActivity</string>
     <string name="title_activity_medications_list">MedicationsList</string>
     <string name="title_activity_edit_reminder">EditReminderActivity</string>
+    <string name="title_activity_organizer">OrganizerActivity</string>
 </resources>

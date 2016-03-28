@@ -43,10 +43,10 @@ public class PhotoManager {
     private File createImageFile(String directory) throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        imageFileName = "JPEG_" + timeStamp + "_";
+        imageFileName = "JPEG_" + timeStamp + "_" + directory;
         File photosDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
-        File storageDir = new File(photosDir + directory);
+        File storageDir = new File(photosDir + "/ElderlyAssistant/" + directory);
 
         // keep the storage directory to be able to be retrieved later
         //imageFileDirectory = storageDir.getPath();
