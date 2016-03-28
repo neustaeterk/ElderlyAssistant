@@ -41,7 +41,6 @@ import java.util.Calendar;
 
 public class AddMedicationActivity extends AppCompatActivity {
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
     String photoName;
     String photoDir;
     long ID;
@@ -169,7 +168,7 @@ public class AddMedicationActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        if (requestCode == PhotoManager.REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Context context = getApplicationContext();
             CharSequence text = "Picture Saved";
             int duration = Toast.LENGTH_SHORT;
