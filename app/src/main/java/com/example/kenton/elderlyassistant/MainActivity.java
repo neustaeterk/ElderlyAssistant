@@ -28,6 +28,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -131,47 +132,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button setAddressButton = (Button) findViewById(R.id.setAddressButton) ;
-        setAddressButton.setOnClickListener(new View.OnClickListener() {
+        Button preferencesButton = (Button) findViewById(R.id.preferencesButton) ;
+        preferencesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
-                alertDialog.setTitle("Home Address");
-                alertDialog.setMessage("Please enter your address: ");
-
-                final EditText input = new EditText(MainActivity.this);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT);
-                input.setLayoutParams(lp);
-
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                String currentAddress = sharedPreferences.getString("home_address", "preference not found");
-                input.setText(currentAddress);
-
-                alertDialog.setView(input);
-
-                alertDialog.setPositiveButton("OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                String address = input.getText().toString();
-                                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                SharedPreferences.Editor editor = settings.edit();
-                                editor.putString("home_address", address);
-
-                                // Commit the edits!
-                                editor.commit();
-                            }
-                        });
-
-                alertDialog.setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                //dialog disappears and cancels automatically
-                            }
-                        });
-
-                alertDialog.show();
+                Intent intent = new Intent(MainActivity.this, PreferencesActivity.class) ;
+                startActivity(intent);
             }
         });
 

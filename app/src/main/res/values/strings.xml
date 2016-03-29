@@ -77,4 +77,5 @@
     <string name="title_activity_medications_list">MedicationsList</string>
     <string name="title_activity_edit_reminder">EditReminderActivity</string>
     <string name="title_activity_organizer">OrganizerActivity</string>
+    <string name="title_activity_preferences">PreferencesActivity</string>
 </resources>

@@ -107,11 +107,11 @@
             android:textSize="25dp"/>
 
         <Button
-            android:id="@+id/setAddressButton"
+            android:id="@+id/preferencesButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Set your home address"
+            android:text="Preferences"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
             android:background="#1f7a7a"
