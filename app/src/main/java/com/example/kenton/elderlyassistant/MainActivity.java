@@ -1,5 +1,6 @@
 package com.example.kenton.elderlyassistant;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -27,6 +28,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,12 +42,15 @@ import java.io.File;
 import java.io.IOException;
 import java.security.Security;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_SELECT_PHONE_NUMBER = 1;
+    static final int REQUEST_GPS = 2;
     private static final int FORMAT_DEGREES = 0;
+    private static final int RESET_DISMISSED_ID = -2;
     private TextView coordinatesText, addressText;
     private LocationManager locationManager;
     private String locationProviderGPS;
@@ -53,11 +58,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // hey changes
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //scheduleResetMedicationDismissed();
 
         Button getGPSButton = (Button) findViewById(R.id.getGPSButton) ;
         getGPSButton.setOnClickListener(new View.OnClickListener() {
@@ -98,8 +104,8 @@ public class MainActivity extends AppCompatActivity {
         medicalRecordOrganizerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
-                //Intent intent = new Intent(MainActivity.this, CrazyFactsActivity.class) ;
-                //startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, OrganizerActivity.class) ;
+                startActivity(intent);
             }
         });
 
@@ -109,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View V) {
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 String address = sharedPreferences.getString("home_address", "preference not found");
-                //Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(address));
                 Uri gmmIntentUri = Uri.parse("google.navigation:q=" + Uri.encode(address));
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
@@ -123,57 +128,51 @@ public class MainActivity extends AppCompatActivity {
         findContactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
-                selectContact();
-
+                selectContact(false);
             }
-
-
         });
 
-        Button setAddressButton = (Button) findViewById(R.id.setAddressButton) ;
-        setAddressButton.setOnClickListener(new View.OnClickListener() {
+        Button preferencesButton = (Button) findViewById(R.id.preferencesButton) ;
+        preferencesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
-                alertDialog.setTitle("Home Address");
-                alertDialog.setMessage("Please enter your address: ");
-
-                final EditText input = new EditText(MainActivity.this);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT);
-                input.setLayoutParams(lp);
-
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                String currentAddress = sharedPreferences.getString("home_address", "preference not found");
-                input.setText(currentAddress);
-
-                alertDialog.setView(input);
-
-                alertDialog.setPositiveButton("OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                String address = input.getText().toString();
-                                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                SharedPreferences.Editor editor = settings.edit();
-                                editor.putString("home_address", address);
-
-                                // Commit the edits!
-                                editor.commit();
-                            }
-                        });
-
-                alertDialog.setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                //dialog.cancel();
-                            }
-                        });
-
-                alertDialog.show();
+                Intent intent = new Intent(MainActivity.this, PreferencesActivity.class) ;
+                startActivity(intent);
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            // Get the URI and query the content provider for the phone number
+            Uri contactUri = data.getData();
+            String[] projection = new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER};
+            Cursor cursor = getContentResolver().query(contactUri, projection,
+                    null, null, null);
+            // If the cursor returned is valid, get the phone number
+            if (cursor != null && cursor.moveToFirst()) {
+                int numberIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                String number = cursor.getString(numberIndex);
+                // Do something with the phone number
+                TextView textView = (TextView) findViewById(R.id.textView);
+                textView.setText(number);
+
+                // We need an Editor object to make preference changes.
+                // All objects are from android.context.Context
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("contact_number", number);
+
+                // Commit the edits!
+                editor.commit();
+            }
+
+            if (requestCode == REQUEST_GPS){
+                String[] coordinates = getGPSCoordinates();
+            }
+        }
     }
 
     @Override
@@ -198,6 +197,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Register the listener with the Location Manager to receive location updates
+        //locationManager.requestLocationUpdates(locationProvider, 0, 0, locListener);
     }
 
     // Code below about LocationListener refer to http://developer.android.com/guide/topics/location/strategies.html
@@ -236,8 +242,6 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
 
         }
-
-
 
         // "Your LocationListener must implement several callback methods that the Location Manager
         // calls when the user location changes or when the status of the service changes."
@@ -298,16 +302,7 @@ public class MainActivity extends AppCompatActivity {
         }
         public void onProviderDisabled(String provider) {
         }
-
-
     };
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // Register the listener with the Location Manager to receive location updates
-        //locationManager.requestLocationUpdates(locationProvider, 0, 0, locListener);
-    }
 
     /**
      *
@@ -326,14 +321,31 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void sendTextMessage(String message)
-    {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String contactNumber = sharedPreferences.getString("contact_number", "preference not found");
-        SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(contactNumber, null, message, null, null);
-        //TextView textView = (TextView) findViewById(R.id.textView);
-        //textView.setText(contactNumber);
+    private String findAddress(String[] coordinates){
+        Geocoder geocoder = new Geocoder(this);
+        double latitude = Double.parseDouble(coordinates[0]);
+        double longitude = Double.parseDouble(coordinates[1]);
+        List<Address> addressList = new ArrayList<>();;
+        String address;
+
+        if(geocoder.isPresent()){
+            try {
+                addressList = geocoder.getFromLocation(latitude, longitude, 1);
+            }
+            catch(IOException geo){
+
+            }
+        }
+
+        if(!addressList.isEmpty()){
+            Address addressObject =addressList.get(0);
+            address = addressObject.getAddressLine(0) + ", " + addressObject.getAddressLine(1) + ", " + addressObject.getAddressLine(2);
+        }
+        else{
+            address = "Address not found.";
+        }
+
+        return address;
     }
 
     private String[] getGPSCoordinates()
@@ -375,6 +387,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             dialog.show();
+
+        }
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String defaultNumber = getString(R.string.pref_default_contact_number);
+        String contactNumber = sharedPreferences.getString("contact_number", defaultNumber);
+
+        if(contactNumber.equals(defaultNumber)){
+            selectContact(true);
+            return coordinates;
         }
 
         locationProviderNetwork = LocationManager.NETWORK_PROVIDER;
@@ -409,70 +431,43 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Elderly Assistant: ", "Error creating location service: " + ex.getMessage());
         }
 
-
         return coordinates;
     }
 
-    public void selectContact() {
+    public void selectContact(boolean getGPS) {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
         if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(intent, REQUEST_SELECT_PHONE_NUMBER);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SELECT_PHONE_NUMBER && resultCode == RESULT_OK) {
-            // Get the URI and query the content provider for the phone number
-            Uri contactUri = data.getData();
-            String[] projection = new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER};
-            Cursor cursor = getContentResolver().query(contactUri, projection,
-                    null, null, null);
-            // If the cursor returned is valid, get the phone number
-            if (cursor != null && cursor.moveToFirst()) {
-                int numberIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-                String number = cursor.getString(numberIndex);
-                // Do something with the phone number
-                TextView textView = (TextView) findViewById(R.id.textView);
-                textView.setText(number);
-
-                // We need an Editor object to make preference changes.
-                // All objects are from android.context.Context
-                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putString("contact_number", number);
-
-                // Commit the edits!
-                editor.commit();
+            if (getGPS){
+                startActivityForResult(intent, REQUEST_GPS);
+            }
+            else {
+                startActivityForResult(intent, REQUEST_SELECT_PHONE_NUMBER);
             }
         }
     }
 
-    private String findAddress(String[] coordinates){
-        Geocoder geocoder = new Geocoder(this);
-        double latitude = Double.parseDouble(coordinates[0]);
-        double longitude = Double.parseDouble(coordinates[1]);
-        List<Address> addressList = new ArrayList<>();;
-        String address;
+    private void sendTextMessage(String message)
+    {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String contactNumber = sharedPreferences.getString("contact_number", "preference not found");
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(contactNumber, null, message, null, null);
+        //TextView textView = (TextView) findViewById(R.id.textView);
+        //textView.setText(contactNumber);
+    }
 
-        if(geocoder.isPresent()){
-            try {
-                addressList = geocoder.getFromLocation(latitude, longitude, 1);
-            }
-            catch(IOException geo){
+    private void scheduleResetMedicationDismissed()
+    {
+        Calendar calendar = Calendar.getInstance();
+        //calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 17);
+        calendar.set(Calendar.MINUTE, 27);
 
-            }
-        }
-
-        if(!addressList.isEmpty()){
-            Address addressObject =addressList.get(0);
-            address = addressObject.getAddressLine(0) + ", " + addressObject.getAddressLine(1) + ", " + addressObject.getAddressLine(2);
-        }
-        else{
-            address = "Address not found.";
-        }
-
-        return address;
+        Intent intent = new Intent(this, ResetMedicationsDismissed.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, RESET_DISMISSED_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 }

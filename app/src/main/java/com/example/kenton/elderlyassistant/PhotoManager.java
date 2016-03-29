@@ -40,6 +40,36 @@ public class PhotoManager {
         return imageFileDirectory;
     }
 
+    private File createImageFile(String directory) throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        imageFileName = "JPEG_" + timeStamp + "_" + directory;
+        File photosDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File storageDir = new File(photosDir + "/ElderlyAssistant/" + directory);
+
+        // keep the storage directory to be able to be retrieved later
+        //imageFileDirectory = storageDir.getPath();
+
+        //make the desired directy if it doesn't exist
+        if (!storageDir.exists())
+        {
+            storageDir.mkdirs();
+        }
+
+        //make the photo in the storageDir
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        imageFileDirectory = image.getAbsolutePath();
+        return image;
+    }
+
     public void takePicture(String directory)
     {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -63,36 +93,6 @@ public class PhotoManager {
                 //galleryAddPic();
             }
         }
-    }
-
-    private File createImageFile(String directory) throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        imageFileName = "JPEG_" + timeStamp + "_";
-        File photosDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
-        File storageDir = new File(photosDir + directory);
-
-        // keep the storage directory to be able to be retrieved later
-        //imageFileDirectory = storageDir.getPath();
-
-        //make the desired directy if it doesn't exist
-        if (!storageDir.exists())
-        {
-            storageDir.mkdirs();
-        }
-
-        //make the photo in the storageDir
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-        imageFileDirectory = image.getAbsolutePath();
-        return image;
     }
 
     private void galleryAddPic() {

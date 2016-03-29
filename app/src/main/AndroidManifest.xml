@@ -57,6 +57,7 @@
         </activity>
 
         <receiver android:name=".NotificationPublisher" />
+        <receiver android:name=".ResetMedicationsDismissed" />
 
         <activity
             android:name=".MedicationsList"
@@ -75,6 +76,24 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.kenton.elderlyassistant.MedicationsList" />
+        </activity>
+        <activity
+            android:name=".OrganizerActivity"
+            android:label="@string/title_activity_organizer"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.kenton.elderlyassistant.MainActivity" />
+        </activity>
+        <activity
+            android:name=".PreferencesActivity"
+            android:label="@string/title_activity_preferences"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.kenton.elderlyassistant.MainActivity" />
         </activity>
     </application>
 
