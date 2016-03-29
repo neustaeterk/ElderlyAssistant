@@ -50,9 +50,6 @@ public class OrganizerActivity extends AppCompatActivity {
         }
     }
 
-    /*
-     *  createDialog - creates the popup dialog which implements the "edit" and "delete" functions
-     */
     private AlertDialog createDialog()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(OrganizerActivity.this);

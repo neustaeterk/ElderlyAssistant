@@ -68,7 +68,7 @@ public class MedicationsListFragment extends Fragment {
         //listView.setAdapter(mMedListAdapter);
 
         //final CustomArrayAdapter mMedListAdapter2 = new CustomArrayAdapter(getActivity(), medicationsNames, reminders);
-        final CustomArrayAdapter mMedListAdapter2 = new CustomArrayAdapter(getActivity(), reminders);
+        mMedListAdapter2 = new CustomArrayAdapter(getActivity(), reminders);
         listView.setAdapter(mMedListAdapter2);
 
 
@@ -131,9 +131,9 @@ public class MedicationsListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //reminders.clear();
-        //reminders.addAll(mDb.getAllReminders());
-        //mMedListAdapter2.notifyDataSetChanged();
+        reminders.clear();
+        reminders.addAll(mDb.getAllReminders());
+        mMedListAdapter2.notifyDataSetChanged();
 
     }
 
@@ -177,6 +177,10 @@ public class MedicationsListFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int id) {
                         // User clicked yes
                         db.deleteReminder(reminder);
+                        Intent refresh = new Intent(getContext(), MedicationsList.class);
+                        refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(refresh);
                     }
                 });
                 builderDelete.show();
