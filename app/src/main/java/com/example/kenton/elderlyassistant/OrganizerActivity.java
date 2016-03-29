@@ -58,20 +58,24 @@ public class OrganizerActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(OrganizerActivity.this);
         builder.setMessage("Choose a category");
 
-        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.organizer_category_selector, null);
+        builder.setView(dialogView);
+
+        /*int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion >= 21)
         {
             builder.setView(R.layout.organizer_category_selector);
-        }
+        }*/
 
-        final LayoutInflater inflater = (LayoutInflater)this.getSystemService
-                (Context.LAYOUT_INFLATER_SERVICE);
+        //final LayoutInflater inflater = (LayoutInflater)this.getSystemService
+        //        (Context.LAYOUT_INFLATER_SERVICE);
 
         // Add the buttons
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                View rootView = inflater.inflate(R.layout.organizer_category_selector, null);
-                RadioGroup radioGroup = (RadioGroup) rootView.findViewById(R.id.categoriesRadioGroup);
+                //View rootView = inflater.inflate(R.layout.organizer_category_selector, null);
+                RadioGroup radioGroup = (RadioGroup) dialogView.findViewById(R.id.categoriesRadioGroup);
                 int checkedButton = radioGroup.getCheckedRadioButtonId();
                 if (checkedButton == R.id.appointmentSummariesRadioButton) {
                     directory = getString(R.string.photos_directory_appointment_summaries);
