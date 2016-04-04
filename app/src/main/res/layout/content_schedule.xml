@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="#00BFFF"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -12,45 +14,104 @@
     tools:context="com.example.kenton.elderlyassistant.ScheduleActivity"
     tools:showIn="@layout/activity_schedule">
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Add Medication"
-        android:id="@+id/addReminderButton"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"/>
+    <LinearLayout
+        android:id="@+id/up"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Show Reminders"
-        android:id="@+id/showRemindersButton"
-        android:layout_below="@+id/addReminderButton"
-        android:layout_alignParentStart="true" />
+        <Button
+            android:id="@+id/addReminderButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Add Medication"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_red"
+            android:textStyle="bold"
+            android:textSize="25dp"
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Delete all reminders"
-        android:id="@+id/deleteRemindersButton"
-        android:layout_below="@+id/showRemindersButton"
-        android:layout_alignParentStart="true" />
+            />
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Send the notification"
-        android:id="@+id/sendNotificationButton"
-        android:layout_below="@+id/deleteRemindersButton"
-        android:layout_alignParentStart="true" />
+        <Button
+            android:id="@+id/showRemindersButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Show Reminders"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:textSize="25dp"
+            android:background="@drawable/button_blue"
+            />
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="All Medication List"
-        android:id="@+id/medicationListButton"
-        android:layout_below="@+id/deleteRemindersButton"
-        android:layout_alignParentStart="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mid"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/deleteRemindersButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Delete all reminders"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:textSize="25dp"
+            android:background="@drawable/button_green"
+            />
+
+        <Button
+            android:id="@+id/goHomeButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Directions Home"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:textSize="25dp"
+            android:background="@drawable/button_yellow"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/butt"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/sendNotificationButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Send the notification"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_purple"
+            android:textSize="25dp"/>
+
+        <Button
+            android:id="@+id/medicationListButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="All Medication List"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_turquoise"
+            android:textSize="25dp"/>
+
+    </LinearLayout>
+
 
     <Button
         android:layout_width="fill_parent"
@@ -66,4 +127,4 @@
         android:id="@+id/imageView"
         android:layout_below="@+id/cancelAlarmButton" />
 
-</RelativeLayout>
+</LinearLayout>

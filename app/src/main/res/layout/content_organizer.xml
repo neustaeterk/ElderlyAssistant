@@ -39,7 +39,7 @@
             android:layout_weight="1"
             android:text="Take a photo"
             android:textColor="#FFFFFF"
-            android:background="#73264d"
+            android:background="@drawable/button_purple"
             android:textStyle="bold"
             android:textSize="25dp" />
 
@@ -51,7 +51,7 @@
             android:text="Medication Records"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
-            android:background="#1f7a7a"
+            android:background="@drawable/button_turquoise"
             android:textSize="25dp"/>
 
     </LinearLayout>

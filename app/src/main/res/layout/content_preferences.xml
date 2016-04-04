@@ -27,7 +27,7 @@
             android:text="Select a contact Person"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
-            android:background="#73264d"
+            android:background="@drawable/button_red"
             android:textSize="25dp"/>
 
         <Button
@@ -38,7 +38,7 @@
             android:text="Set your home address"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
-            android:background="#1f7a7a"
+            android:background="@drawable/button_blue"
             android:textSize="25dp"/>
 
     </LinearLayout>
