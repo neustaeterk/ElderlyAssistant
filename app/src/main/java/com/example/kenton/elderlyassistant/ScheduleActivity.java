@@ -38,15 +38,6 @@ public class ScheduleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_schedule);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final DatabaseHelper db = new DatabaseHelper(this);
@@ -80,36 +71,6 @@ public class ScheduleActivity extends AppCompatActivity {
             }
         });
 
-        Button showRemindersButton = (Button) findViewById(R.id.showRemindersButton) ;
-        showRemindersButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View V) {
-                Log.d("Reading: ", "Reading all reminders..");
-                List<MedicationReminders> reminders = db.getAllReminders();
-                for (MedicationReminders medReminder : reminders) {
-                    String log = "Id: " + medReminder.getId() + " ,Time: " +
-                                 medReminder.getTime() + " ,Day: " + medReminder.getDaysOfWeek() +
-                                 " ,Name: " + medReminder.getMedicationName() +
-                                 " ,Photo Name: " + medReminder.getPhotoName() +
-                                 " ,Photo Directory: " + medReminder.getPhotoDirectory() +
-                                 " ,Dismissed: " + medReminder.getDismissed();
-                    // Writing Contacts to log
-                    Log.d("Name: ", log);
-                }
-
-                MedicationReminders medicationReminders = db.getMedicationReminder(1);
-                Log.d("MedName ", medicationReminders.getMedicationName());
-            }
-        });
-
-        Button deleteRemindersButton = (Button) findViewById(R.id.deleteRemindersButton) ;
-        deleteRemindersButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View V) {
-                db.deleteAllReminders();
-            }
-        });
-
         Button allMedButton = (Button) findViewById(R.id.medicationListButton);
         allMedButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,7 +80,7 @@ public class ScheduleActivity extends AppCompatActivity {
             }
         });
 
-        Button sendNotificationButton = (Button) findViewById(R.id.sendNotificationButton) ;
+        /*Button sendNotificationButton = (Button) findViewById(R.id.sendNotificationButton) ;
         sendNotificationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
@@ -159,21 +120,9 @@ public class ScheduleActivity extends AppCompatActivity {
 
                 sendNotification(bitmap, medName);
             }
-        });
+        });*/
 
-//        Button allMedButton = (Button) findViewById(R.id.medicationListButton) ;
-//        allMedButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View V) {
-//                /*Log.d("Insert: ", "Inserting...");
-//                db.addReminder(new MedicationReminders("10:00", "Pill 1"));
-//                db.addReminder((new MedicationReminders("13:00", "Pill 2")));*/
-//                Intent intent = new Intent(ScheduleActivity.this, MedicationsList.class) ;
-//                startActivity(intent);
-//            }
-//        });
-
-        Button cancelAlarmButton = (Button) findViewById(R.id.cancelAlarmButton) ;
+        /*Button cancelAlarmButton = (Button) findViewById(R.id.cancelAlarmButton) ;
         cancelAlarmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
@@ -193,7 +142,7 @@ public class ScheduleActivity extends AppCompatActivity {
                     alarmManager.cancel(pendingIntent);
                 }
             }
-        });
+        });*/
 
     }
 

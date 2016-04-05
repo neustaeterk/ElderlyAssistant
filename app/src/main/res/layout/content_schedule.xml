@@ -35,11 +35,11 @@
             />
 
         <Button
-            android:id="@+id/showRemindersButton"
+            android:id="@+id/medicationListButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Show Reminders"
+            android:text="All Medication List"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
             android:textSize="25dp"
@@ -55,64 +55,6 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/deleteRemindersButton"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Delete all reminders"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:textSize="25dp"
-            android:background="@drawable/button_green"
-            />
-
-        <Button
-            android:id="@+id/goHomeButton"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Directions Home"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:textSize="25dp"
-            android:background="@drawable/button_yellow"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/butt"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/sendNotificationButton"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Send the notification"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/button_purple"
-            android:textSize="25dp"/>
-
-        <Button
-            android:id="@+id/medicationListButton"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="All Medication List"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/button_turquoise"
-            android:textSize="25dp"/>
-
-    </LinearLayout>
-
-
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -127,4 +69,5 @@
         android:id="@+id/imageView"
         android:layout_below="@+id/cancelAlarmButton" />
 
+</LinearLayout>
 </LinearLayout>
