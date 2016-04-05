@@ -3,12 +3,15 @@ package com.example.kenton.elderlyassistant;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -101,5 +104,22 @@ public class PhotoManager {
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
         activity.sendBroadcast(mediaScanIntent);
+    }
+
+    public Bitmap[] getPictures(String directory)
+    {
+        Bitmap[] photos;
+        File photosDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File storageDir = new File(photosDir + "/ElderlyAssistant/" + directory);
+        FileFilter fileFilter = null;
+        File[] files = storageDir.listFiles(fileFilter);
+        photos = new Bitmap[files.length];
+        BitmapFactory bitmapFactory = new BitmapFactory();
+        for (int i=0; i < files.length; i++) {
+            Log.i("debug", files[i].toString());
+            photos[i] = bitmapFactory.decodeFile(files[i].getAbsolutePath());
+        }
+        return photos;
     }
 }

@@ -95,6 +95,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.kenton.elderlyassistant.MainActivity" />
         </activity>
+        <activity
+            android:name=".MedicalRecordsViewerActivity"
+            android:label="@string/title_activity_medical_records_viewer"
+            android:parentActivityName=".OrganizerActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.kenton.elderlyassistant.OrganizerActivity" />
+        </activity>
     </application>
 
 </manifest>
