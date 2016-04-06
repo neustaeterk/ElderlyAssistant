@@ -104,6 +104,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.kenton.elderlyassistant.OrganizerActivity" />
         </activity>
+        <activity
+            android:name=".HelpMainActivity"
+            android:label="@string/title_activity_help_main"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.kenton.elderlyassistant.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
