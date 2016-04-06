@@ -147,7 +147,7 @@ public class PhotoManager {
         // Determine how much to scale down the image
         //int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
         //int scaleFactor = photoH/256;
-        int scaleFactor = 8;
+        int scaleFactor = 5;
         int inSampleSize = 1;
 
         /*
@@ -173,9 +173,11 @@ public class PhotoManager {
 
         Bitmap bitmap_decoded = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
 
+        int scaledSize = 800;
+
         if (bitmap_decoded != null)
         {
-            bitmap = Bitmap.createScaledBitmap(bitmap_decoded, 256, 256, false);
+            bitmap = Bitmap.createScaledBitmap(bitmap_decoded, scaledSize, scaledSize, false);
         }
         else
         {
