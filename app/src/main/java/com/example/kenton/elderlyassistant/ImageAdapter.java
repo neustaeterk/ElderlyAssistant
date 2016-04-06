@@ -22,7 +22,6 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        //return mThumbIds.length;
         return thumbnails.length;
     }
 
@@ -40,29 +39,14 @@ public class ImageAdapter extends BaseAdapter {
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(95, 95));
+            imageView.setLayoutParams(new GridView.LayoutParams(350, 350));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(8, 8, 8, 8);
         } else {
             imageView = (ImageView) convertView;
         }
-        //imageView.setImageResource(mThumbIds[position]);
+
         imageView.setImageBitmap(thumbnails[position]);
         return imageView;
     }
-
-    // references to our images
-    private Integer[] mThumbIds = {
-            R.drawable.ic_info_black_24dp, R.drawable.ic_notifications_black_24dp
-            //R.drawable.ic_info_black_24dp, R.drawable.ic_notifications_black_24dp,
-            //R.drawable.ic_info_black_24dp, R.drawable.ic_notifications_black_24dp,
-            //R.drawable.ic_info_black_24dp, R.drawable.ic_notifications_black_24dp,
-            //R.drawable.ic_info_black_24dp, R.drawable.ic_notifications_black_24dp,
-            //R.drawable.ic_info_black_24dp, R.drawable.ic_notifications_black_24dp,
-            //R.drawable.ic_info_black_24dp, R.drawable.ic_notifications_black_24dp,
-            //R.drawable.ic_info_black_24dp, R.drawable.ic_notifications_black_24dp,
-            //R.drawable.ic_info_black_24dp, R.drawable.ic_notifications_black_24dp,
-            //R.drawable.ic_info_black_24dp, R.drawable.ic_notifications_black_24dp,
-            //R.drawable.ic_info_black_24dp, R.drawable.ic_notifications_black_24dp
-    };
 }
