@@ -105,12 +105,6 @@ public class MedicalRecordsViewerActivity extends AppCompatActivity {
         imageView.setImageBitmap(photo);
         builder.setView(dialogView);
 
-        // Add the buttons
-        builder.setPositiveButton("NEXT", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-
-            }
-        });
         builder.setNegativeButton("CLOSE", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // cancelled
