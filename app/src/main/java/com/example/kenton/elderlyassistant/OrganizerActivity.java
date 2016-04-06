@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 public class OrganizerActivity extends AppCompatActivity {
 
+    final int TAKE_PICTURE_CODE = 1;
+    final int GET_PICTURE_CODE = 2;
     PhotoManager photoManager;
     String directory;
 
@@ -26,6 +28,7 @@ public class OrganizerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_organizer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         photoManager = new PhotoManager(this);
 
@@ -33,7 +36,16 @@ public class OrganizerActivity extends AppCompatActivity {
         takePhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
-                AlertDialog alertDialog = createDialog();
+                AlertDialog alertDialog = createDialog(TAKE_PICTURE_CODE);
+                alertDialog.show();
+            }
+        });
+
+        Button viewMedicalRecordsButton = (Button) findViewById(R.id.viewMedicalRecordsButton) ;
+        viewMedicalRecordsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View V) {
+                AlertDialog alertDialog = createDialog(GET_PICTURE_CODE);
                 alertDialog.show();
             }
         });
@@ -50,8 +62,9 @@ public class OrganizerActivity extends AppCompatActivity {
         }
     }
 
-    private AlertDialog createDialog()
+    private AlertDialog createDialog(int code)
     {
+        final int CODE = code;
         AlertDialog.Builder builder = new AlertDialog.Builder(OrganizerActivity.this);
         builder.setMessage("Choose a category");
 
@@ -77,7 +90,14 @@ public class OrganizerActivity extends AppCompatActivity {
                     directory = "Error: checked button";
                 }
 
-                photoManager.takePicture(directory);
+                if (CODE == TAKE_PICTURE_CODE) {
+                    photoManager.takePicture(directory);
+                }
+                else if (CODE == GET_PICTURE_CODE) {
+                    Intent intent = new Intent(OrganizerActivity.this, MedicalRecordsViewerActivity.class) ;
+                    intent.putExtra("directory", directory);
+                    startActivity(intent);
+                }
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
