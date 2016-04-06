@@ -1,25 +1,28 @@
 package com.example.kenton.elderlyassistant;
 
-import android.app.NotificationManager;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class MedicalRecordsViewerActivity extends AppCompatActivity {
 
     private int count;
     private Bitmap[] thumbnails;
+    private Bitmap[] photos;
     private boolean[] thumbnailsselection;
     private String[] arrPath;
     private ImageAdapter imageAdapter;
@@ -71,7 +74,7 @@ public class MedicalRecordsViewerActivity extends AppCompatActivity {
         }
 
         PhotoManager photoManager = new PhotoManager(this);
-        Bitmap[] photos = photoManager.getPictures(directory);
+        photos = photoManager.getPictures(directory);
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
         //imageAdapter = new ImageAdapter(this, thumbnails);
@@ -84,10 +87,39 @@ public class MedicalRecordsViewerActivity extends AppCompatActivity {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(context, "" + position,
-                        Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "" + position,
+                //        Toast.LENGTH_SHORT).show();
+                AlertDialog dialog = createDialog(photos[position]);
+                dialog.show();
             }
         });
+    }
+
+    private AlertDialog createDialog(Bitmap photo)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MedicalRecordsViewerActivity.this);
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.medical_records_photo_viewer, null);
+        ImageView imageView = (ImageView) dialogView.findViewById(R.id.zoomedPhotoView);
+        imageView.setImageBitmap(photo);
+        builder.setView(dialogView);
+
+        // Add the buttons
+        builder.setPositiveButton("NEXT", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+        builder.setNegativeButton("CLOSE", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // cancelled
+            }
+        });
+
+        // Create the AlertDialog
+        AlertDialog dialog = builder.create();
+        return dialog;
     }
 
 }

@@ -124,11 +124,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button findContactButton = (Button) findViewById(R.id.findContactButton) ;
-        findContactButton.setOnClickListener(new View.OnClickListener() {
+        Button helpButton = (Button) findViewById(R.id.helpButton) ;
+        helpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
-                selectContact(false);
+                Intent intent = new Intent(MainActivity.this, HelpMainActivity.class) ;
+                startActivity(intent);
             }
         });
 

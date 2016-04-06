@@ -79,4 +79,5 @@
     <string name="title_activity_organizer">OrganizerActivity</string>
     <string name="title_activity_preferences">PreferencesActivity</string>
     <string name="title_activity_medical_records_viewer">MedicalRecordsViewerActivity</string>
+    <string name="title_activity_help_main">helpMainActivity</string>
 </resources>
