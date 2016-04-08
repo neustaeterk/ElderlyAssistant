@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -75,7 +76,8 @@ public class MedicalRecordsViewerActivity extends AppCompatActivity {
 
         }*/
 
-        PhotoManager photoManager = new PhotoManager(this);
+        final PhotoManager photoManager = new PhotoManager(this);
+        //get compressed photos for the listView
         photos = photoManager.getPictures(directory);
         files = photoManager.getFiles(directory);
 
@@ -92,7 +94,9 @@ public class MedicalRecordsViewerActivity extends AppCompatActivity {
                                     int position, long id) {
                 //Toast.makeText(context, "" + position,
                 //        Toast.LENGTH_SHORT).show();
-                AlertDialog dialog = createDialog(photos[position], files[position]);
+                BitmapFactory bitmapFactory = new BitmapFactory();
+                Bitmap uncompressedPhoto = bitmapFactory.decodeFile(files[position].getAbsolutePath());
+                AlertDialog dialog = createDialog(uncompressedPhoto, files[position]);
                 dialog.show();
             }
         });
