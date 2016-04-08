@@ -28,6 +28,7 @@ public class PhotoManager {
     Activity activity;
     String imageFileName;
     String imageFileDirectory;
+    File[] files;
 
     PhotoManager (Activity activity)
     {
@@ -114,15 +115,30 @@ public class PhotoManager {
                 Environment.DIRECTORY_PICTURES);
         File storageDir = new File(photosDir + "/ElderlyAssistant/" + directory);
         FileFilter fileFilter = null;
-        File[] files = storageDir.listFiles(fileFilter);
+        files = storageDir.listFiles(fileFilter);
         photos = new Bitmap[files.length];
-        BitmapFactory bitmapFactory = new BitmapFactory();
+
         for (int i=0; i < files.length; i++) {
             Log.i("debug", files[i].toString());
             //photos[i] = bitmapFactory.decodeFile(files[i].getAbsolutePath());
             photos[i] = scaleImage(files[i].getAbsolutePath());
         }
+
         return photos;
+    }
+
+    public File[] getFiles(String directory)
+    {
+        if (files == null)
+        {
+            File photosDir = Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES);
+            File storageDir = new File(photosDir + "/ElderlyAssistant/" + directory);
+            FileFilter fileFilter = null;
+            files = storageDir.listFiles(fileFilter);
+        }
+
+        return files;
     }
 
     public Bitmap scaleImage(String mCurrentPhotoPath)

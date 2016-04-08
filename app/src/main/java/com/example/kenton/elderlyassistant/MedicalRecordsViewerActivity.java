@@ -18,6 +18,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
+
 public class MedicalRecordsViewerActivity extends AppCompatActivity {
 
     private int count;
@@ -27,6 +29,7 @@ public class MedicalRecordsViewerActivity extends AppCompatActivity {
     private String[] arrPath;
     private ImageAdapter imageAdapter;
     private String directory;
+    private File[] files;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +46,9 @@ public class MedicalRecordsViewerActivity extends AppCompatActivity {
             directory = getString(R.string.photos_directory_appointment_summaries);
         }
 
-        final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
-        final String orderBy = MediaStore.Images.Media._ID;
+        //final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
 
-        Cursor imagecursor = getContentResolver().query( MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+        /*Cursor imagecursor = getContentResolver().query( MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 columns,
                 MediaStore.Images.Media.DATA + " like ? ",
                 new String[] {"/ElderlyAssistant/"+getString(R.string.photos_directory_appointment_summaries)},
@@ -71,16 +73,17 @@ public class MedicalRecordsViewerActivity extends AppCompatActivity {
 
             arrPath[i]= imagecursor.getString(dataColumnIndex);
 
-        }
+        }*/
 
         PhotoManager photoManager = new PhotoManager(this);
         photos = photoManager.getPictures(directory);
+        files = photoManager.getFiles(directory);
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
         //imageAdapter = new ImageAdapter(this, thumbnails);
         imageAdapter = new ImageAdapter(this, photos);
         gridview.setAdapter(imageAdapter);
-        imagecursor.close();
+        //imagecursor.close();
 
         final Context context = this;
 
@@ -89,14 +92,15 @@ public class MedicalRecordsViewerActivity extends AppCompatActivity {
                                     int position, long id) {
                 //Toast.makeText(context, "" + position,
                 //        Toast.LENGTH_SHORT).show();
-                AlertDialog dialog = createDialog(photos[position]);
+                AlertDialog dialog = createDialog(photos[position], files[position]);
                 dialog.show();
             }
         });
     }
 
-    private AlertDialog createDialog(Bitmap photo)
+    private AlertDialog createDialog(Bitmap photo, File inFile)
     {
+        final File file = inFile;
         AlertDialog.Builder builder = new AlertDialog.Builder(MedicalRecordsViewerActivity.this);
 
         LayoutInflater inflater = this.getLayoutInflater();
@@ -104,6 +108,39 @@ public class MedicalRecordsViewerActivity extends AppCompatActivity {
         ImageView imageView = (ImageView) dialogView.findViewById(R.id.zoomedPhotoView);
         imageView.setImageBitmap(photo);
         builder.setView(dialogView);
+
+        final Context context = this;
+
+        builder.setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked delete button
+                AlertDialog.Builder builderDelete = new AlertDialog.Builder(MedicalRecordsViewerActivity.this);
+                builderDelete.setTitle("Are you sure you want to delete this picture?");
+                builderDelete.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked cancel
+                    }
+                });
+                builderDelete.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked yes
+                        boolean deleted = file.delete();
+                        if (deleted) {
+                            Toast.makeText(context, "The picture has been deleted",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(context, "The picture could not be deleted",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        Intent refresh = new Intent(context, MedicalRecordsViewerActivity.class);
+                        refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(refresh);
+                    }
+                });
+                builderDelete.show();
+            }
+        });
 
         builder.setNegativeButton("CLOSE", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
