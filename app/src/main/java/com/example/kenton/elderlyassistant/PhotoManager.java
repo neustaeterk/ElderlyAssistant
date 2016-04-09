@@ -28,6 +28,7 @@ public class PhotoManager {
     Activity activity;
     String imageFileName;
     String imageFileDirectory;
+    File[] files;
 
     PhotoManager (Activity activity)
     {
@@ -114,18 +115,33 @@ public class PhotoManager {
                 Environment.DIRECTORY_PICTURES);
         File storageDir = new File(photosDir + "/ElderlyAssistant/" + directory);
         FileFilter fileFilter = null;
-        File[] files = storageDir.listFiles(fileFilter);
+        files = storageDir.listFiles(fileFilter);
         photos = new Bitmap[files.length];
-        BitmapFactory bitmapFactory = new BitmapFactory();
+
         for (int i=0; i < files.length; i++) {
             Log.i("debug", files[i].toString());
             //photos[i] = bitmapFactory.decodeFile(files[i].getAbsolutePath());
-            photos[i] = scaleImage(files[i].getAbsolutePath());
+            photos[i] = scaleImage(files[i].getAbsolutePath(), 8);
         }
+
         return photos;
     }
 
-    public Bitmap scaleImage(String mCurrentPhotoPath)
+    public File[] getFiles(String directory)
+    {
+        if (files == null)
+        {
+            File photosDir = Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES);
+            File storageDir = new File(photosDir + "/ElderlyAssistant/" + directory);
+            FileFilter fileFilter = null;
+            files = storageDir.listFiles(fileFilter);
+        }
+
+        return files;
+    }
+
+    public Bitmap scaleImage(String mCurrentPhotoPath, int scaleFactor)
     {
         Bitmap bitmap;
         // Get the dimensions of the View
@@ -147,7 +163,7 @@ public class PhotoManager {
         // Determine how much to scale down the image
         //int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
         //int scaleFactor = photoH/256;
-        int scaleFactor = 5;
+        //int scaleFactor = 5;
         int inSampleSize = 1;
 
         /*
@@ -173,7 +189,7 @@ public class PhotoManager {
 
         Bitmap bitmap_decoded = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
 
-        int scaledSize = 800;
+        int scaledSize = 300;
 
         if (bitmap_decoded != null)
         {
