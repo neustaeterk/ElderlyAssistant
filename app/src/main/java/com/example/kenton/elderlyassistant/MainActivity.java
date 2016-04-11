@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View V) {
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 String address = sharedPreferences.getString("home_address", "preference not found");
-                if (address.equals("preference not found") || address == null)
+                if (address.equals("preference not found") || address == "")
                 {
                     setAddress();
                 }
