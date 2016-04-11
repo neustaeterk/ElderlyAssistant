@@ -23,12 +23,6 @@ import java.io.File;
 
 public class MedicalRecordsViewerActivity extends AppCompatActivity {
 
-    private int count;
-    private Bitmap[] thumbnails;
-    private Bitmap[] photos;
-    private boolean[] thumbnailsselection;
-    private String[] arrPath;
-    private ImageAdapter imageAdapter;
     private String directory;
     private File[] files;
 
@@ -47,53 +41,19 @@ public class MedicalRecordsViewerActivity extends AppCompatActivity {
             directory = getString(R.string.photos_directory_appointment_summaries);
         }
 
-        //final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
-
-        /*Cursor imagecursor = getContentResolver().query( MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                columns,
-                MediaStore.Images.Media.DATA + " like ? ",
-                new String[] {"/ElderlyAssistant/"+getString(R.string.photos_directory_appointment_summaries)},
-                null);
-
-        int image_column_index = imagecursor.getColumnIndex(MediaStore.Images.Media._ID);
-        this.count = imagecursor.getCount();
-        this.thumbnails = new Bitmap[this.count];
-        this.arrPath = new String[this.count];
-        this.thumbnailsselection = new boolean[this.count];
-
-        for (int i = 0; i < this.count; i++) {
-
-            imagecursor.moveToPosition(i);
-
-            int id = imagecursor.getInt(image_column_index);
-            int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);
-
-            thumbnails[i] = MediaStore.Images.Thumbnails.getThumbnail(
-                    getApplicationContext().getContentResolver(), id,
-                    MediaStore.Images.Thumbnails.MICRO_KIND, null);
-
-            arrPath[i]= imagecursor.getString(dataColumnIndex);
-
-        }*/
-
         final PhotoManager photoManager = new PhotoManager(this);
         //get compressed photos for the listView
-        photos = photoManager.getPictures(directory);
+        Bitmap[] photos = photoManager.getPictures(directory);
         files = photoManager.getFiles(directory);
+        String[] dates = extractDates();
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
-        //imageAdapter = new ImageAdapter(this, thumbnails);
-        imageAdapter = new ImageAdapter(this, photos);
+        ImageAdapter imageAdapter = new ImageAdapter(this, photos, dates);
         gridview.setAdapter(imageAdapter);
-        //imagecursor.close();
-
-        final Context context = this;
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                //Toast.makeText(context, "" + position,
-                //        Toast.LENGTH_SHORT).show();
                 BitmapFactory bitmapFactory = new BitmapFactory();
                 Bitmap uncompressedPhoto = bitmapFactory.decodeFile(files[position].getAbsolutePath());
                 AlertDialog dialog = createDialog(uncompressedPhoto, files[position]);
@@ -137,6 +97,7 @@ public class MedicalRecordsViewerActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                         }
                         Intent refresh = new Intent(context, MedicalRecordsViewerActivity.class);
+                        refresh.putExtra("directory", directory);
                         refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK
                                 | Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(refresh);
@@ -155,6 +116,22 @@ public class MedicalRecordsViewerActivity extends AppCompatActivity {
         // Create the AlertDialog
         AlertDialog dialog = builder.create();
         return dialog;
+    }
+
+    private String[] extractDates() {
+        String[] photoDates = new String[files.length];
+
+        for (int i = 0; i < files.length; i++) {
+            String filename = files[i].getName();
+            // the date part of the filename based on the naming format when the picture was saved
+            StringBuilder date = new StringBuilder(filename.substring(5, 13));
+            date.insert(4, '-');
+            date.insert(7, '-');
+
+            photoDates[i] = date.toString();
+        }
+
+        return photoDates;
     }
 
 }
