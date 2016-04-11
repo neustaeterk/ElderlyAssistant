@@ -119,11 +119,13 @@ public class MainActivity extends AppCompatActivity {
                 {
                     setAddress();
                 }
-                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + Uri.encode(address));
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                if (mapIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(mapIntent);
+                else {
+                    Uri gmmIntentUri = Uri.parse("google.navigation:q=" + Uri.encode(address));
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(mapIntent);
+                    }
                 }
             }
         });
@@ -502,6 +504,12 @@ public class MainActivity extends AppCompatActivity {
                         editor.putString("home_address", address);
                         // Commit the edits!
                         editor.commit();
+                        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + Uri.encode(address));
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                            startActivity(mapIntent);
+                        }
                     }
                 });
 
