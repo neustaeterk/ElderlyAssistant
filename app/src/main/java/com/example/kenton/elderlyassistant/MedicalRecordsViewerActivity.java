@@ -31,6 +31,7 @@ public class MedicalRecordsViewerActivity extends AppCompatActivity {
     private ImageAdapter imageAdapter;
     private String directory;
     private File[] files;
+    private String[] dates;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +81,11 @@ public class MedicalRecordsViewerActivity extends AppCompatActivity {
         //get compressed photos for the listView
         photos = photoManager.getPictures(directory);
         files = photoManager.getFiles(directory);
+        dates = extractDates();
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
         //imageAdapter = new ImageAdapter(this, thumbnails);
-        imageAdapter = new ImageAdapter(this, photos);
+        imageAdapter = new ImageAdapter(this, photos, dates);
         gridview.setAdapter(imageAdapter);
         //imagecursor.close();
 
@@ -155,6 +157,18 @@ public class MedicalRecordsViewerActivity extends AppCompatActivity {
         // Create the AlertDialog
         AlertDialog dialog = builder.create();
         return dialog;
+    }
+
+    private String[] extractDates() {
+        String[] photoDates = new String[files.length];
+
+        for (int i = 0; i < files.length; i++) {
+            String filename = files[i].getName();
+            filename = filename.substring(5, 13);
+            photoDates[i] = filename;
+        }
+
+        return photoDates;
     }
 
 }
