@@ -23,11 +23,8 @@ import java.io.File;
 
 public class MedicalRecordsViewerActivity extends AppCompatActivity {
 
-    private Bitmap[] photos;
-    private ImageAdapter imageAdapter;
     private String directory;
     private File[] files;
-    private String[] dates;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +43,12 @@ public class MedicalRecordsViewerActivity extends AppCompatActivity {
 
         final PhotoManager photoManager = new PhotoManager(this);
         //get compressed photos for the listView
-        photos = photoManager.getPictures(directory);
+        Bitmap[] photos = photoManager.getPictures(directory);
         files = photoManager.getFiles(directory);
-        dates = extractDates();
+        String[] dates = extractDates();
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
-        imageAdapter = new ImageAdapter(this, photos, dates);
+        ImageAdapter imageAdapter = new ImageAdapter(this, photos, dates);
         gridview.setAdapter(imageAdapter);
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -100,6 +97,7 @@ public class MedicalRecordsViewerActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                         }
                         Intent refresh = new Intent(context, MedicalRecordsViewerActivity.class);
+                        refresh.putExtra("directory", directory);
                         refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK
                                 | Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(refresh);
