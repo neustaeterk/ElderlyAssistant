@@ -164,8 +164,12 @@ public class MedicalRecordsViewerActivity extends AppCompatActivity {
 
         for (int i = 0; i < files.length; i++) {
             String filename = files[i].getName();
-            filename = filename.substring(5, 13);
-            photoDates[i] = filename;
+            // the date part of the filename based on the naming format when the picture was saved
+            StringBuilder date = new StringBuilder(filename.substring(5, 13));
+            date.insert(4, '-');
+            date.insert(7, '-');
+
+            photoDates[i] = date.toString();
         }
 
         return photoDates;
