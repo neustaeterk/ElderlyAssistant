@@ -115,6 +115,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View V) {
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 String address = sharedPreferences.getString("home_address", "preference not found");
+                if (address.equals("preference not found"))
+                {
+                    setAddress();
+                }
                 Uri gmmIntentUri = Uri.parse("google.navigation:q=" + Uri.encode(address));
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
@@ -470,5 +474,44 @@ public class MainActivity extends AppCompatActivity {
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, pendingIntent);
+    }
+
+    private void setAddress()
+    {
+        final LayoutInflater inflater = this.getLayoutInflater();
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+        alertDialog.setTitle("Home Address");
+        alertDialog.setMessage("Please enter your address: ");
+
+        final View dialogView = inflater.inflate(R.layout.dialog_edit_text, null);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String currentAddress = sharedPreferences.getString("home_address", "preference not found");
+
+        final EditText input = (EditText) dialogView.findViewById(R.id.input);
+        input.setText(currentAddress);
+
+        alertDialog.setView(dialogView);
+
+        alertDialog.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String address = input.getText().toString();
+                        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("home_address", address);
+                        // Commit the edits!
+                        editor.commit();
+                    }
+                });
+
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //dialog disappears and cancels automatically
+                    }
+                });
+
+        alertDialog.show();
     }
 }

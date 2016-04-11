@@ -27,6 +27,7 @@ public class PreferencesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_preferences);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Button findContactButton = (Button) findViewById(R.id.findContactButton) ;
         findContactButton.setOnClickListener(new View.OnClickListener() {
