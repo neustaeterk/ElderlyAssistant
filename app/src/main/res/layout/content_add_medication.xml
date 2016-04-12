@@ -71,7 +71,7 @@
         <CheckBox
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="S"
+            android:text="Sun"
             android:textSize="18dp"
             android:id="@+id/checkBoxSunday"
             android:layout_weight="1"
@@ -82,7 +82,7 @@
         <CheckBox
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="M"
+            android:text="Mon"
             android:id="@+id/checkBoxMonday"
             android:layout_weight="1"
             android:textSize="18dp"
@@ -92,7 +92,7 @@
         <CheckBox
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="T"
+            android:text="Tue"
             android:id="@+id/checkBoxTuesday"
             android:layout_weight="1"
             android:textSize="18dp"
@@ -102,7 +102,7 @@
         <CheckBox
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="W"
+            android:text="Wed"
             android:id="@+id/checkBoxWednesday"
             android:layout_weight="1"
             android:textSize="18dp"
@@ -130,7 +130,7 @@
         <CheckBox
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="T"
+            android:text="Thu"
             android:id="@+id/checkBoxThursday"
             android:layout_weight="1"
             android:textSize="18dp"
@@ -140,7 +140,7 @@
         <CheckBox
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="F"
+            android:text="Fri"
             android:id="@+id/checkBoxFriday"
             android:layout_weight="1"
             android:textSize="18dp"
@@ -150,7 +150,7 @@
         <CheckBox
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="S"
+            android:text="Sat"
             android:id="@+id/checkBoxSaturday"
             android:layout_weight="1"
             android:textSize="18dp"
