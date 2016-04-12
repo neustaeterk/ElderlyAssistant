@@ -10,6 +10,7 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -20,6 +21,7 @@
         android:layout_height="wrap_content"
         android:text="Type the name of the medication:"
         android:id="@+id/textTitle"
+        android:textSize="29dp"
         android:imeOptions="actionDone"/>
 
     <EditText
@@ -37,12 +39,16 @@
         android:layout_height="wrap_content"
         android:id="@+id/timePicker"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/medicationName" />
+        android:layout_below="@+id/medicationName"
+        android:background="@drawable/button_turquoise"
+
+
+        />
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Choose the days of the week that the medication should be taken:"
+        android:text=" "
         android:id="@+id/textDaysOfWeekTitle"
         android:layout_below="@+id/timePicker" />
 
@@ -59,6 +65,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="S"
+            android:textSize="18dp"
             android:id="@+id/checkBoxSunday"
             android:layout_weight="1"
             android:checked="true" />
@@ -69,6 +76,8 @@
             android:text="M"
             android:id="@+id/checkBoxMonday"
             android:layout_weight="1"
+            android:textSize="18dp"
+
             android:checked="true"/>
 
         <CheckBox
@@ -77,6 +86,7 @@
             android:text="T"
             android:id="@+id/checkBoxTuesday"
             android:layout_weight="1"
+            android:textSize="18dp"
             android:checked="true"/>
 
         <CheckBox
@@ -85,6 +95,7 @@
             android:text="W"
             android:id="@+id/checkBoxWednesday"
             android:layout_weight="1"
+            android:textSize="18dp"
             android:checked="true"/>
 
         <CheckBox
@@ -93,6 +104,7 @@
             android:text="T"
             android:id="@+id/checkBoxThursday"
             android:layout_weight="1"
+            android:textSize="18dp"
             android:checked="true"/>
 
         <CheckBox
@@ -101,6 +113,7 @@
             android:text="F"
             android:id="@+id/checkBoxFriday"
             android:layout_weight="1"
+            android:textSize="18dp"
             android:checked="true"/>
 
         <CheckBox
@@ -109,17 +122,23 @@
             android:text="S"
             android:id="@+id/checkBoxSaturday"
             android:layout_weight="1"
+            android:textSize="18dp"
             android:checked="true"/>
 
     </LinearLayout>
+
+
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="TAKE A PHOTO OF MEDICATION"
+        android:textSize="25dp"
         android:id="@+id/takePhotoButton"
         android:layout_below="@+id/days_of_week"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:background="@drawable/button_turquoise"
+        />
 
     <Button
         android:layout_width="fill_parent"
@@ -127,7 +146,10 @@
         android:text="ADD TO SCHEDULE"
         android:id="@+id/addMedicationButton"
         android:layout_below="@+id/takePhotoButton"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textSize="25dp"
+        android:background="@drawable/button_turquoise"
+        />
 
 </RelativeLayout>
 </ScrollView>
