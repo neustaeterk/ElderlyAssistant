@@ -19,6 +19,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Edit the medication name (if needed):"
+        android:textSize="25dp"
+        android:textColor="#000080"
         android:id="@+id/textTitle" />
 
     <EditText
@@ -28,6 +30,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignEnd="@+id/timePicker"
         android:layout_below="@+id/textTitle"
+        android:textSize="25dp"
         android:singleLine="true" />
 
     <TimePicker
@@ -41,17 +44,23 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="RETAKE A PHOTO OF MEDICATION"
+        android:textSize="25dp"
+        android:textColor="#FFFFFF"
         android:id="@+id/takePhotoButton"
         android:layout_below="@+id/timePicker"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:background="@drawable/button_turquoise"/>
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="UPDATE REMINDER"
+        android:textSize="25dp"
+        android:textColor="#FFFFFF"
         android:id="@+id/addMedicationButton"
         android:layout_below="@+id/takePhotoButton"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:background="@drawable/button_turquoise"/>
 
 </RelativeLayout>
 
