@@ -83,7 +83,39 @@
 
     <string name="help_main_text">
         Emergency: Send your Location\n
-        -Go to \"Options\" to select a contact person.
-
+        ----------------------------\n\n
+        - Go to \"Options\" to select a contact person.\n
+        - In case of an emergency, press the \"Emergency: Send you Location\".
+        If your location setting and Data/Network are enabled, your location\'s
+        coordinates, approximate address and the google maps URL
+        of your location will be sent through SMS to the contact
+        person you have selected.\n
+        If your Data/Network is disabled, only your location\'s coordinates will
+        be sent.\n\n
+        ----------------------------\n
+        Medication Reminders:\n
+        ----------------------------\n\n
+        - \"Add medication\" allows you to store your medications name along with a
+        picture of each medication you store in your reminder schedule.\n
+        - \"All medication list\" gives you access to all the stored medications you
+        have added and will show you the medications you have taken that day and
+        the ones you didn\'t take.\n
+        - An alarm will go off to remind you to take your medication. The only
+        way to confirm that you have taken your medication is to press on the
+        \"Dismiss Alarm\". If you swipe the notification, the app will note that
+        you didn\'t take the medication.\n
+        ----------------------------\n
+        Medication Record Organizer:\n
+        ----------------------------\n\n
+        - The \"Medication Record Organizer\" allows you to store the \"Appointment
+        Summaries\", \"Test Result\" and \"Miscellaneous\" documents.\n\n
+        ----------------------------\n
+        Directions Home:\n
+        ----------------------------\n\n
+        - Go to \"Options\" to set your home address.
+        - Location setting and Data/Network need to be enabled.
+        - \"Directions Home\" will guide you back home by connecting you
+        to google maps.
     </string>
+    <string name="help_emergency_title">Emergency: Send your Location</string>
 </resources>
