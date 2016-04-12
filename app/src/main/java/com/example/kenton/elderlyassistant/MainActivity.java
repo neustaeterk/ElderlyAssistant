@@ -70,8 +70,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View V) {
                 String[] coordinates = getGPSCoordinates();
-                coordinatesText = (TextView) findViewById(R.id.textView);
-                addressText = (TextView) findViewById(R.id.textView2);
+                //coordinatesText = (TextView) findViewById(R.id.textView);
+                //addressText = (TextView) findViewById(R.id.textView2);
                 //String coordinatesString = "" + coordinates[0] + ", " + coordinates[1];
                 //coordinatesText.setText(coordinatesString);
 
@@ -163,8 +163,8 @@ public class MainActivity extends AppCompatActivity {
                 int numberIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
                 String number = cursor.getString(numberIndex);
                 // Do something with the phone number
-                TextView textView = (TextView) findViewById(R.id.textView);
-                textView.setText(number);
+                //TextView textView = (TextView) findViewById(R.id.textView);
+                //textView.setText(number);
 
                 // We need an Editor object to make preference changes.
                 // All objects are from android.context.Context
@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
     LocationListener locListenerGPS = new LocationListener() {
         public void onLocationChanged(Location location) {
             // Called when a new location is found by the network location provider.
-            displayLocation(location);
+            //displayLocation(location);
             Log.d("location", location.toString());
             String lat = Location.convert(location.getLatitude(), FORMAT_DEGREES);
             String longitude = Location.convert(location.getLongitude(), FORMAT_DEGREES);
@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
             if (!address.equals("Address not found."))
             {
                 message = address;
-                addressText.setText(address);
+                //addressText.setText(address);
             }
 
             try
@@ -268,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
         public void onLocationChanged(Location location) {
             // Called when a new location is found by the network location provider.
 
-            displayLocation(location);
+            //displayLocation(location);
             Log.d("location", location.toString());
             String lat = Location.convert(location.getLatitude(), FORMAT_DEGREES);
             String longitude = Location.convert(location.getLongitude(), FORMAT_DEGREES);
@@ -278,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
             if (!address.equals("Address not found."))
             {
                 message = address;
-                addressText.setText(address);
+                //addressText.setText(address);
             }
 
             try
@@ -319,12 +319,12 @@ public class MainActivity extends AppCompatActivity {
         if (loc != null) {
             String lat = Location.convert(loc.getLatitude(), FORMAT_DEGREES);
             String longitude = Location.convert(loc.getLongitude(), FORMAT_DEGREES);
-            coordinatesText.setText(lat + ", " + longitude);
+            //coordinatesText.setText(lat + ", " + longitude);
 
         } else {
             String lat = "no location available";
             String longitude = "no location available";
-            coordinatesText.setText(lat + ", " + longitude);
+            //coordinatesText.setText(lat + ", " + longitude);
         }
     }
 
