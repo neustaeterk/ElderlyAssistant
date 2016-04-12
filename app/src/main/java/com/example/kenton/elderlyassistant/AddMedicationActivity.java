@@ -128,6 +128,7 @@ public class AddMedicationActivity extends AppCompatActivity {
                     String time = hour + ":" + minute;
 
                     String daysOfWeek = getDaysOfWeek();
+                    //String daysOfWeek = "DMTWJFS"; // For testing
 
                     medicationReminders.setTime(time);
                     medicationReminders.setDaysOfWeek(daysOfWeek);
