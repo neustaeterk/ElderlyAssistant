@@ -82,6 +82,8 @@
     <string name="title_activity_help_main">helpMainActivity</string>
 
     <string name="help_main_text">
-        Test\nTest new line
+        Emergency: Send your Location\n
+        -Go to \"Options\" to select a contact person.
+
     </string>
 </resources>
