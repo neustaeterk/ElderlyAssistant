@@ -22,6 +22,8 @@
         android:text="Type the name of the medication:"
         android:id="@+id/textTitle"
         android:textSize="29dp"
+        android:textColor="#000080"
+
         android:imeOptions="actionDone"/>
 
     <EditText
@@ -40,7 +42,6 @@
         android:id="@+id/timePicker"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/medicationName"
-        android:background="@drawable/button_turquoise"
 
 
         />
@@ -134,6 +135,7 @@
         android:layout_height="wrap_content"
         android:text="TAKE A PHOTO OF MEDICATION"
         android:textSize="25dp"
+        android:textColor="#FFFFFF"
         android:id="@+id/takePhotoButton"
         android:layout_below="@+id/days_of_week"
         android:layout_alignParentStart="true"
@@ -147,6 +149,8 @@
         android:id="@+id/addMedicationButton"
         android:layout_below="@+id/takePhotoButton"
         android:layout_alignParentStart="true"
+        android:textColor="#FFFFFF"
+
         android:textSize="25dp"
         android:background="@drawable/button_turquoise"
         />
