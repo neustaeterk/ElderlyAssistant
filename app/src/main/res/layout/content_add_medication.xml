@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:text="Type the name of the medication:"
         android:id="@+id/textTitle"
-        android:textSize="29dp"
+        android:textSize="25dp"
         android:textColor="#000080"
         android:imeOptions="actionDone"/>
 
@@ -46,17 +46,26 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text=" "
+        android:text="Select the days of the week"
         android:id="@+id/textDaysOfWeekTitle"
-        android:layout_below="@+id/timePicker" />
+        android:layout_below="@+id/timePicker"
+        android:textSize="25dp"
+        android:textColor="#000080"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text=" "
+        android:id="@+id/textSpace1"
+        android:layout_below="@+id/textDaysOfWeekTitle" />
 
     <LinearLayout
         android:id="@+id/days_of_week"
         android:layout_width="match_parent"
-        android:layout_height="25dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="horizontal"
-        android:layout_below="@+id/textDaysOfWeekTitle"
+        android:layout_below="@+id/textSpace1"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
         <CheckBox
@@ -67,8 +76,7 @@
             android:id="@+id/checkBoxSunday"
             android:layout_weight="1"
             android:checked="true"
-            android:scaleX="0.70"
-            android:scaleY="0.70"
+            android:scaleY="1.5"
             />
 
         <CheckBox
@@ -78,8 +86,8 @@
             android:id="@+id/checkBoxMonday"
             android:layout_weight="1"
             android:textSize="18dp"
-
-            android:checked="true"/>
+            android:checked="true"
+            android:scaleY="1.5"/>
 
         <CheckBox
             android:layout_width="0dp"
@@ -88,7 +96,8 @@
             android:id="@+id/checkBoxTuesday"
             android:layout_weight="1"
             android:textSize="18dp"
-            android:checked="true"/>
+            android:checked="true"
+            android:scaleY="1.5"/>
 
         <CheckBox
             android:layout_width="0dp"
@@ -97,29 +106,36 @@
             android:id="@+id/checkBoxWednesday"
             android:layout_weight="1"
             android:textSize="18dp"
-            android:checked="true"/>
-
-
+            android:checked="true"
+            android:scaleY="1.5"/>
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text=" "
+        android:id="@+id/textSpace2"
+        android:layout_below="@+id/days_of_week" />
 
     <LinearLayout
         android:id="@+id/days_of_week2"
         android:layout_width="match_parent"
-        android:layout_height="25dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="horizontal"
-        android:layout_below="@+id/days_of_week"
+        android:layout_below="@+id/textSpace2"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
         <CheckBox
-            android:layout_width="20dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="T"
             android:id="@+id/checkBoxThursday"
             android:layout_weight="1"
             android:textSize="18dp"
-            android:checked="true"/>
+            android:checked="true"
+            android:scaleY="1.5"/>
 
         <CheckBox
             android:layout_width="0dp"
@@ -128,7 +144,8 @@
             android:id="@+id/checkBoxFriday"
             android:layout_weight="1"
             android:textSize="18dp"
-            android:checked="true"/>
+            android:checked="true"
+            android:scaleY="1.5"/>
 
         <CheckBox
             android:layout_width="0dp"
@@ -137,12 +154,17 @@
             android:id="@+id/checkBoxSaturday"
             android:layout_weight="1"
             android:textSize="18dp"
-            android:checked="true"/>
+            android:checked="true"
+            android:scaleY="1.5"/>
 
     </LinearLayout>
 
-
-
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text=" "
+        android:id="@+id/textSpace3"
+        android:layout_below="@+id/days_of_week2" />
 
     <Button
         android:layout_width="fill_parent"
@@ -151,7 +173,7 @@
         android:textSize="25dp"
         android:textColor="#FFFFFF"
         android:id="@+id/takePhotoButton"
-        android:layout_below="@+id/days_of_week2"
+        android:layout_below="@+id/textSpace3"
         android:layout_alignParentStart="true"
         android:background="@drawable/button_turquoise"
         />
