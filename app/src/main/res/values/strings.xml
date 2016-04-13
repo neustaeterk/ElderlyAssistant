@@ -90,7 +90,9 @@
         coordinates, approximate address and the google maps URL
         of your location will be sent through SMS to the contact
         person you have selected.\n
-        If your Data/Network is disabled, only your location\'s coordinates will
+        -To select an emergency contact, go to \"Options\" on the main screen. You must select
+        somebody who is already saved in the phone\'s contact list.\n
+        -If your Data/Network is disabled, only your location\'s coordinates will
         be sent.\n\n
         ----------------------------\n
         Medication Reminders:\n
@@ -98,12 +100,12 @@
         - \"Add medication\" allows you to store your medications name along with a
         picture of each medication you store in your reminder schedule.\n
         - \"All medication list\" gives you access to all the stored medications you
-        have added and will show you the medications you have taken that day and
-        the ones you didn\'t take.\n
+        have added and will show you the medications you have taken that day (green) and
+        the ones you didn\'t take (red).\n
         - An alarm will go off to remind you to take your medication. The only
         way to confirm that you have taken your medication is to press on the
         \"Dismiss Alarm\". If you swipe the notification, the app will note that
-        you didn\'t take the medication.\n
+        you didn\'t take the medication.\n\n
         ----------------------------\n
         Medication Record Organizer:\n
         ----------------------------\n\n
