@@ -54,8 +54,7 @@ public class MedicalRecordsViewerActivity extends AppCompatActivity {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                BitmapFactory bitmapFactory = new BitmapFactory();
-                Bitmap uncompressedPhoto = bitmapFactory.decodeFile(files[position].getAbsolutePath());
+                Bitmap uncompressedPhoto = BitmapFactory.decodeFile(files[position].getAbsolutePath());
                 AlertDialog dialog = createDialog(uncompressedPhoto, files[position]);
                 dialog.show();
             }
