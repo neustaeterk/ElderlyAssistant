@@ -401,7 +401,7 @@ public class MainActivity extends AppCompatActivity {
         String defaultNumber = getString(R.string.pref_default_contact_number);
         String contactNumber = sharedPreferences.getString("contact_number", defaultNumber);
 
-        if(contactNumber.equals(defaultNumber)){
+        if(contactNumber.equals(defaultNumber) || contactNumber.equals("")){
             selectContact(true);
             return coordinates;
         }
